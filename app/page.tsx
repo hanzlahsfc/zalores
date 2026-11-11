@@ -16,8 +16,8 @@ import {
   Stars,
 } from "@/components/Icons";
 
-const hero = getProduct("meridian")!;
-const heroAlt = getProduct("solana")!;
+const hero = getProduct("aviator")!;
+const heroAlt = getProduct("concorde")!;
 
 const perks = [
   { icon: IconTruck, title: `Free shipping over ${formatPrice(site.freeShippingThreshold)}`, sub: "Ships same day before 2pm ET" },
@@ -29,23 +29,23 @@ const perks = [
 const reviews = [
   {
     quote:
-      "I've owned Ray-Bans for a decade and these are better. The acetate feels twice the price.",
+      "The mineral glass is on another level — sharper and clearer than anything I've owned, including pairs twice the price.",
     name: "Maya R.",
-    detail: "Meridian — verified buyer",
+    detail: "Aviator — verified buyer",
     rating: 5,
   },
   {
     quote:
-      "Cut the glare off the water completely. First pair of sunglasses I haven't lost or broken in a year.",
+      "Cobalt lenses killed the glare off the water completely. First pair I've owned that actually survives a year of fishing.",
     name: "Daniel K.",
-    detail: "Coastline — verified buyer",
+    detail: "Aviator Cobalt — verified buyer",
     rating: 5,
   },
   {
     quote:
-      "The Solana gets compliments everywhere. Packaging alone felt like a gift to myself.",
+      "Bayonet temples under a headset for six hours, zero pressure points. Now I get why pilots swear by these.",
     name: "Priya S.",
-    detail: "Solana — verified buyer",
+    detail: "Concorde — verified buyer",
     rating: 5,
   },
 ];
@@ -53,18 +53,18 @@ const reviews = [
 const craft = [
   {
     icon: IconLeaf,
-    title: "Hand-finished acetate",
-    body: "Mazzucchelli-derived plant acetate, tumbled for 72 hours and polished by hand. No injection-molded plastic.",
+    title: "Hand-assembled, one at a time",
+    body: "Every frame passes through 200+ hands-on steps — soldered, polished and inspected before a lens is ever fitted.",
   },
   {
     icon: IconSun,
-    title: "Optics first",
-    body: "Nylon polarized lenses with anti-scratch, anti-glare and hydrophobic coatings — not tinted glass.",
+    title: "Mineral-glass optics",
+    body: "Real glass lenses, ground for zero distortion and hardened against scratches — not a tinted plastic stamp-out.",
   },
   {
     icon: IconShield,
-    title: "Built to keep",
-    body: "Five-barrel steel hinges, a 2-year warranty, and discounted lifetime lens replacements.",
+    title: "Bayonet temples",
+    body: "The military-spec temple that slides under headsets and helmets without pressure points. Built to be repaired, not replaced.",
   },
 ];
 
@@ -128,7 +128,7 @@ export default function HomePage() {
         <div className="marquee-track">
           {Array.from({ length: 2 }).map((_, i) => (
             <span key={i}>
-              Polarized UV400 &nbsp;✦&nbsp; Hand-finished acetate
+              Mineral-glass lenses &nbsp;✦&nbsp; Hand-assembled frames
               &nbsp;✦&nbsp; Free shipping over $75 &nbsp;✦&nbsp; 30-day returns
               &nbsp;✦&nbsp; 2-year warranty &nbsp;✦&nbsp;
             </span>
@@ -163,7 +163,7 @@ export default function HomePage() {
           </Link>
         </div>
         <div className="product-grid grid-3">
-          {[getProduct("meridian")!, getProduct("solana")!, getProduct("coastline")!].map(
+          {[getProduct("aviator")!, getProduct("concorde")!, getProduct("shelby-aviator-ii")!].map(
             (p, i) => (
               <ProductCard key={p.slug} product={p} priority={i === 0} />
             )
@@ -176,31 +176,31 @@ export default function HomePage() {
         <div className="editorial-inner">
           <div className="editorial-media">
             <ProductImage
-              product={getProduct("verano")!}
+              product={getProduct("aviator")!}
               src="/assets/img/editorial.jpg"
-              uid="ed-verano"
+              uid="ed-aviator"
             />
           </div>
           <div className="editorial-copy">
             <span className="eyebrow">Our craft</span>
-            <h2>Built for long light.</h2>
+            <h2>Made the hard way, on purpose.</h2>
             <p>
-              Most sunglasses are designed in a week and molded in a day. Ours
-              start as raw acetate blocks, get cut, tumbled for three days, and
-              polished by hand before a polarized lens is ever fitted.
+              Most sunglasses are stamped out in a day. Ours are soldered,
+              plated and polished by hand — then fitted with real mineral-glass
+              lenses, because optics are the whole point.
             </p>
             <ul className="check-list">
               <li>
-                <IconCheck width={16} height={16} /> Plant-based Italian acetate,
-                never brittle plastic
+                <IconCheck width={16} height={16} /> Hand-assembled metal frames
+                — 200+ steps per pair
               </li>
               <li>
-                <IconCheck width={16} height={16} /> Polarized nylon lenses —
-                clearer than glass, half the weight
+                <IconCheck width={16} height={16} /> Mineral-glass lenses —
+                sharper and harder than polycarbonate
               </li>
               <li>
-                <IconCheck width={16} height={16} /> Five-barrel steel hinges
-                rated for 30,000 folds
+                <IconCheck width={16} height={16} /> Bayonet temples — the
+                military-spec fit pilots trust
               </li>
             </ul>
             <Link href="/about/" className="btn btn-dark">

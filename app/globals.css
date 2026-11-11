@@ -428,6 +428,9 @@ input, select, textarea {
   width: 100%;
   height: 100%;
 }
+.hero-arch .product-photo {
+  object-position: 72% 50%;
+}
 
 .hero-chip {
   position: absolute;

@@ -5,7 +5,7 @@ import ShopClient from "@/components/ShopClient";
 export const metadata: Metadata = {
   title: "Shop all sunglasses",
   description:
-    "Polarized, handcrafted sunglasses — everyday icons, statement frames and sport optics. Free shipping over $75.",
+    "Hand-assembled aviators with mineral-glass lenses — classics, limited runs and accessories. Free shipping over $75.",
 };
 
 export default function ShopPage() {
@@ -15,8 +15,8 @@ export default function ShopPage() {
         <span className="eyebrow">The collection</span>
         <h1>Sunglasses</h1>
         <p className="page-sub">
-          Six silhouettes, one obsession: lenses you&rsquo;ll actually notice
-          the difference through.
+          Hand-assembled frames and real mineral-glass lenses — plus the gear
+          that keeps them pristine.
         </p>
       </header>
       <Suspense>

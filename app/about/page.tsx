@@ -6,13 +6,13 @@ import ProductImage from "@/components/ProductImage";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Zalores makes polarized sunglasses the slow way — hand-finished acetate, real optics, honest prices.",
+    "Zalores sells hand-assembled metal sunglasses with real mineral-glass lenses — frames built the slow way, priced honestly.",
 };
 
 const stats = [
-  { n: "72", label: "hours every frame is tumbled" },
+  { n: "200+", label: "hands-on steps in every frame" },
   { n: "4.9", label: "average review, 2,800+ buyers" },
-  { n: "30k", label: "folds our hinges are rated for" },
+  { n: "1978", label: "the year the first frame shipped" },
 ];
 
 export default function AboutPage() {
@@ -31,7 +31,7 @@ export default function AboutPage() {
       <div className="about-split">
         <div className="about-media">
           <ProductImage
-            product={getProduct("coastline")!}
+            product={getProduct("aviator")!}
             src="/assets/img/about.jpg"
             uid="about-hero"
           />
@@ -39,22 +39,21 @@ export default function AboutPage() {
         <div className="about-copy">
           <h2>Optics first, always.</h2>
           <p>
-            Every pair ships with nylon polarized lenses — the same material
-            used in premium sport optics — because a frame is only as good as
-            what you see through it. UV400 protection, anti-scratch,
-            anti-glare and hydrophobic coatings are standard, not upgrades.
+            Every frame we sell is hand-assembled — soldered, plated and
+            polished through 200+ individual steps — then fitted with real
+            mineral-glass lenses, because a frame is only as good as what you
+            see through it. These are the same frames issued to military
+            pilots for decades.
           </p>
           <p>
-            Our acetate comes from plant-based stock, gets tumbled for three
-            days and polished by hand. It costs more and takes longer. It also
-            means your frames feel like they belong on your face, not in a
-            gas-station spinner rack.
+            We stock the full line plus the accessories that keep a good pair
+            alive: leather cases, retainer straps and proper lens-care kits.
           </p>
           <h2>Priced for people, not margins.</h2>
           <p>
-            Premium sunglasses carry 10x markups through distributors and
-            licensing houses. We sell direct, so the $85 pair wears like a
-            $250 pair — because that&rsquo;s roughly what went into it.
+            Premium eyewear carries 10x markups through distributors and
+            licensing houses. We keep it simple — authorized frames, honest
+            prices, and a warranty we actually answer email about.
           </p>
         </div>
       </div>
@@ -71,7 +70,7 @@ export default function AboutPage() {
       <section className="cta-band">
         <div>
           <span className="eyebrow eyebrow-light">The collection</span>
-          <h2>See what slow made.</h2>
+          <h2>See what 200 steps makes.</h2>
         </div>
         <Link href="/shop/" className="btn btn-light btn-lg">
           Shop sunglasses

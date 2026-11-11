@@ -7,7 +7,7 @@ import { formatPrice } from "@/lib/format";
 import ProductImage from "./ProductImage";
 import { IconArrow, IconClose } from "./Icons";
 
-const POPULAR = ["Aviator", "Tortoise", "Polarized", "Sport", "Cat-eye"];
+const POPULAR = ["Aviator", "Gold", "Cobalt", "Shelby", "Case"];
 
 export default function SearchModal({
   open,

@@ -38,9 +38,9 @@ export default function Footer() {
         <nav className="footer-col" aria-label="Shop">
           <h3>Shop</h3>
           <Link href="/shop/">All sunglasses</Link>
-          <Link href="/shop/?collection=everyday">Everyday</Link>
-          <Link href="/shop/?collection=statement">Statement</Link>
-          <Link href="/shop/?collection=sport">Sport</Link>
+          <Link href="/shop/?collection=classics">The Classics</Link>
+          <Link href="/shop/?collection=limited">Limited &amp; Collabs</Link>
+          <Link href="/shop/?collection=accessories">Accessories</Link>
         </nav>
 
         <nav className="footer-col" aria-label="Company">

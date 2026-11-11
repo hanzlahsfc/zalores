@@ -4,7 +4,8 @@ export type Silhouette =
   | "aviator"
   | "round"
   | "cat-eye"
-  | "sport";
+  | "sport"
+  | "accessory";
 
 /** A purchasable variant — Shopify-style "Color" option. */
 export interface Colorway {
@@ -44,7 +45,7 @@ export interface Product {
   gallery: string[];
 }
 
-export type CollectionSlug = "everyday" | "statement" | "sport";
+export type CollectionSlug = "classics" | "limited" | "accessories";
 
 export interface Collection {
   slug: CollectionSlug;

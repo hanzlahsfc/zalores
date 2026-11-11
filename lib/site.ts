@@ -7,7 +7,7 @@ export const site = {
   name: "Zalores",
   tagline: "Eyewear, elevated.",
   description:
-    "Premium polarized sunglasses designed for long light. Handcrafted acetate frames, UV400 protection, free shipping over $75.",
+    "Hand-assembled metal sunglasses with real mineral-glass lenses. Aviators, limited editions and eyewear accessories — free shipping over $75.",
   url: "https://zalores.com",
   email: "hello@zalores.com",
   phone: "+1 (555) 013-4200",
@@ -20,10 +20,10 @@ export const site = {
     tiktok: "https://tiktok.com/@zalores",
     pinterest: "https://pinterest.com/zalores",
   },
-  heroKicker: "The Solstice Collection",
-  heroTitle: "See the world in better light.",
+  heroKicker: "Handcrafted American Eyewear",
+  heroTitle: "See the world through real glass.",
   heroSub:
-    "Polarized lenses. Hand-finished acetate. Frames built to be worn every day — and noticed every time.",
+    "Mineral-glass lenses. Hand-assembled frames. Bayonet temples built for the cockpit — and worn everywhere since 1978.",
 } as const;
 
 export type Site = typeof site;

@@ -10,15 +10,15 @@ export const metadata: Metadata = {
 const faqs = [
   {
     title: "Are the lenses really polarized?",
-    body: "Yes — every pair ships with nylon polarized lenses rated UV400 (100% UVA/UVB). Polarization kills reflected glare off water, roads and glass; UV400 handles the rays you can't see.",
+    body: "Every frame ships with real mineral-glass lenses — UV400 (100% UVA/UVB) with polarized options on most models. Mineral glass is harder and optically truer than polycarbonate.",
   },
   {
     title: "How do I pick the right size?",
-    body: "All our frames are a standard medium fit (lens width 50–54mm). If most sunglasses fit you, ours will. If you're between sizes, the Meridian and Verano run most forgiving.",
+    body: "All our frames are a standard medium fit (lens width 52–58mm). If most sunglasses fit you, ours will. If you're between sizes, the Concorde runs the most forgiving.",
   },
   {
     title: "Do the frames fit wide faces?",
-    body: "Meridian, Coastline and Ridgeline have the widest fits and flexible hinges that accommodate wider faces comfortably. Check each product page for measurements.",
+    body: "The Concorde and Shelby Aviator II have the widest fits, and bayonet temples flex naturally around wider heads without pressure points.",
   },
   {
     title: "How fast is shipping?",

@@ -32,6 +32,8 @@ function lensPath(s: Silhouette) {
       return (
         <path d="M -80 -32 C -42 -52 40 -52 80 -28 C 82 0 68 28 36 42 C 0 54 -54 44 -72 14 C -78 2 -80 -16 -80 -32 Z" />
       );
+    case "accessory":
+      return <rect x="-74" y="-52" width="148" height="104" rx="26" />;
   }
 }
 
