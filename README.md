@@ -40,16 +40,22 @@ npm run build      # static site emitted to ./out
 
 ## Product photography
 
-Until real photos exist, each product renders a consistent brand-style SVG
-illustration. Drop files into `public/assets/img/` using the naming in
-**[IMAGE_PROMPTS.md](./IMAGE_PROMPTS.md)** and they go live automatically:
+Real product and lifestyle photography already ships in `public/assets/img/`
+— sourced from Randolph Engineering's public CDN and optimized locally
+(transparent PNGs composited on white, oversized files downscaled to web
+weight). If you don't have a reseller/affiliate relationship with Randolph,
+swap these for your own photos or licensed assets before selling.
+
+The fallback chain still applies per product:
 
 - `<slug>.jpg` — main product shot
 - `<slug>-<colorway>.jpg` — per-variant shot (auto-switches with swatches)
 - `<slug>-2/3/4.jpg` — gallery frames
 - `hero.jpg`, `editorial.jpg`, `about.jpg`, `collections/*.jpg`, `og.jpg`
 
-IMAGE_PROMPTS.md contains a ready-to-paste art direction + one prompt per file.
+Any missing file falls back to the SVG product art automatically.
+**[IMAGE_PROMPTS.md](./IMAGE_PROMPTS.md)** has a ready-to-paste art
+direction + one prompt per file if you generate replacements.
 
 ## Payments & forms (wire before launch)
 
