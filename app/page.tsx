@@ -3,7 +3,6 @@ import { site } from "@/lib/site";
 import { collections, getProduct, products } from "@/lib/products";
 import { formatPrice } from "@/lib/format";
 import ProductCard from "@/components/ProductCard";
-import ProductArt from "@/components/ProductArt";
 import ProductImage from "@/components/ProductImage";
 import {
   IconArrow,
@@ -108,10 +107,10 @@ export default function HomePage() {
             </div>
             <Link
               href={`/products/${heroAlt.slug}/`}
-              className="hero-mini-card hero-chip-b"
+              className="hero-chip hero-mini-card hero-chip-b"
             >
               <span className="hero-mini-thumb">
-                <ProductArt product={heroAlt} uid="hero-alt" />
+                <ProductImage product={heroAlt} uid="hero-alt" />
               </span>
               <span>
                 <strong>{heroAlt.name}</strong>

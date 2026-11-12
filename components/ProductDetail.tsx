@@ -3,7 +3,6 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import type { Colorway, Product } from "@/lib/types";
 import ProductImage from "./ProductImage";
-import ProductArt from "./ProductArt";
 
 /**
  * Holds the selected colorway for the whole product detail view so the
@@ -74,9 +73,10 @@ export default function ProductDetail({
                 onClick={() => setActive(i)}
                 aria-label={`View image ${i + 1}`}
               >
-                <ProductArt
+                <ProductImage
                   product={product}
                   colorway={colorway}
+                  src={i === 0 ? undefined : media[i]}
                   uid={`pdp-t${i}-${product.slug}-${colorway.id}`}
                 />
               </button>
