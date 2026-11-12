@@ -61,26 +61,28 @@ export default function Header() {
             {site.name}
           </Link>
 
-          <nav className="main-nav nav-right" aria-label="Secondary">
-            {NAV.slice(2).map((l) => (
-              <Link key={l.href} href={l.href}>
-                {l.label}
-              </Link>
-            ))}
-          </nav>
+          <div className="header-right">
+            <nav className="main-nav nav-right" aria-label="Secondary">
+              {NAV.slice(2).map((l) => (
+                <Link key={l.href} href={l.href}>
+                  {l.label}
+                </Link>
+              ))}
+            </nav>
 
-          <div className="header-actions">
-            <button
-              className="icon-btn"
-              aria-label="Search"
-              onClick={() => setSearchOpen(true)}
-            >
-              <IconSearch width={21} height={21} />
-            </button>
-            <button className="icon-btn cart-btn" aria-label="Open cart" onClick={openCart}>
-              <IconBag width={22} height={22} />
-              {count > 0 && <span className="cart-count">{count}</span>}
-            </button>
+            <div className="header-actions">
+              <button
+                className="icon-btn"
+                aria-label="Search"
+                onClick={() => setSearchOpen(true)}
+              >
+                <IconSearch width={21} height={21} />
+              </button>
+              <button className="icon-btn cart-btn" aria-label="Open cart" onClick={openCart}>
+                <IconBag width={22} height={22} />
+                {count > 0 && <span className="cart-count">{count}</span>}
+              </button>
+            </div>
           </div>
         </div>
       </header>

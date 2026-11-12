@@ -309,6 +309,13 @@ input, select, textarea {
   justify-content: flex-end;
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  justify-self: end;
+}
+
 .menu-btn {
   display: none;
   justify-self: start;
@@ -462,8 +469,8 @@ input, select, textarea {
 }
 
 .hero-mini-thumb {
-  width: 64px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border-radius: 10px;
   overflow: hidden;
   flex-shrink: 0;
@@ -588,7 +595,7 @@ input, select, textarea {
 .product-card-media {
   display: block;
   position: relative;
-  aspect-ratio: 4 / 3.4;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
 }
 .product-card-media .product-art,
@@ -1075,7 +1082,7 @@ input, select, textarea {
   position: relative;
   border-radius: var(--radius);
   overflow: hidden;
-  aspect-ratio: 4 / 3.2;
+  aspect-ratio: 1 / 1;
   border: 1px solid var(--line);
 }
 .pdp-main .product-art,
@@ -1093,7 +1100,7 @@ input, select, textarea {
 .pdp-thumb {
   border-radius: var(--radius-sm);
   overflow: hidden;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1 / 1;
   border: 1px solid var(--line);
 }
 .pdp-thumb .product-art {
@@ -1394,7 +1401,7 @@ legend {
 .os-thumb {
   position: relative;
   width: 68px;
-  height: 54px;
+  height: 68px;
   border-radius: var(--radius-sm);
   overflow: hidden;
   flex-shrink: 0;
@@ -1557,7 +1564,7 @@ legend {
 }
 .cart-thumb {
   width: 84px;
-  height: 66px;
+  height: 84px;
   border-radius: var(--radius-sm);
   overflow: hidden;
   flex-shrink: 0;
@@ -1967,7 +1974,7 @@ legend {
 }
 .sr-thumb {
   width: 56px;
-  height: 44px;
+  height: 56px;
   border-radius: 8px;
   overflow: hidden;
   flex-shrink: 0;
@@ -2140,7 +2147,7 @@ legend {
 }
 .sticky-thumb {
   width: 56px;
-  height: 42px;
+  height: 56px;
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -2284,7 +2291,8 @@ p.cart-note {
 }
 .order-upsell .sr-thumb {
   width: 100%;
-  height: 70px;
+  height: auto;
+  aspect-ratio: 1 / 1;
 }
 .order-upsell a > span:last-child {
   display: flex;
@@ -2330,4 +2338,20 @@ p.cart-note {
 }
 .pimg .product-photo.show {
   opacity: 1;
+}
+
+/* ---------- form backend states ---------- */
+
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.form-error {
+  color: #b3261e;
+  font-size: 14px;
+  margin-top: -4px;
 }

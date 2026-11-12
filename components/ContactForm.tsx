@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { submitContact } from "@/lib/forms";
 import { IconCheck } from "./Icons";
 
 export default function ContactForm() {
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState(false);
+  const [busy, setBusy] = useState(false);
 
   if (sent)
     return (
@@ -18,25 +21,45 @@ export default function ContactForm() {
   return (
     <form
       className="contact-form"
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        // Wire to your email/form backend (Formspree, Resend, etc.) here.
-        setSent(true);
+        if (busy) return;
+        setBusy(true);
+        setError(false);
+        const f = new FormData(e.currentTarget);
+        const ok = await submitContact({
+          name: String(f.get("name")),
+          email: String(f.get("email")),
+          subject: String(f.get("subject")),
+          message: String(f.get("message")),
+        });
+        setBusy(false);
+        if (ok) setSent(true);
+        else setError(true);
       }}
     >
+      {/* honeypot — bots fill it, humans never see it */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        className="hp-field"
+        aria-hidden="true"
+      />
       <div className="field-row">
         <label className="field">
           <span>Name</span>
-          <input required autoComplete="name" />
+          <input name="name" required autoComplete="name" />
         </label>
         <label className="field">
           <span>Email</span>
-          <input type="email" required autoComplete="email" />
+          <input name="email" type="email" required autoComplete="email" />
         </label>
       </div>
       <label className="field">
         <span>Subject</span>
-        <select required defaultValue="">
+        <select name="subject" required defaultValue="">
           <option value="" disabled>
             Choose a topic
           </option>
@@ -49,10 +72,15 @@ export default function ContactForm() {
       </label>
       <label className="field">
         <span>Message</span>
-        <textarea required rows={5} />
+        <textarea name="message" required rows={5} />
       </label>
-      <button type="submit" className="btn btn-dark btn-lg">
-        Send message
+      {error && (
+        <p className="form-error">
+          Something went wrong — please try again or email us directly.
+        </p>
+      )}
+      <button type="submit" className="btn btn-dark btn-lg" disabled={busy}>
+        {busy ? "Sending…" : "Send message"}
       </button>
     </form>
   );
