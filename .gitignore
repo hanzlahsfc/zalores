@@ -8,3 +8,5 @@ next-env.d.ts
 Thumbs.db
 .env*
 !.env.example
+
+supabase/.temp/
