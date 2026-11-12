@@ -33,7 +33,7 @@ export default function ContactPage() {
           <div className="contact-block">
             <h3>Returns</h3>
             <p>
-              Start a return any time within 30 days — details in{" "}
+              Start a return any time within 30 days. Details in{" "}
               <a href="/policies/shipping-returns/">Shipping &amp; returns</a>.
             </p>
           </div>

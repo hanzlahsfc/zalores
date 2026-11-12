@@ -79,7 +79,7 @@ export default function SearchModal({
           </div>
         ) : results.length === 0 ? (
           <p className="search-none">
-            No results for &ldquo;{q}&rdquo; — try a style, color or
+            No results for &ldquo;{q}&rdquo;, try a style, color or
             collection.
           </p>
         ) : (

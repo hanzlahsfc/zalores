@@ -67,7 +67,7 @@ export default function ProductBuy({ product }: { product: Product }) {
       {/* variant picker */}
       <div className="option-block">
         <span className="option-label">
-          Color — <strong>{colorway.name}</strong>
+          Color: <strong>{colorway.name}</strong>
         </span>
         <div className="swatch-row" role="radiogroup" aria-label="Color">
           {product.colorways.map((c) => (
@@ -150,7 +150,7 @@ export default function ProductBuy({ product }: { product: Product }) {
 
       <p className="pickup-line">
         <IconTruck width={16} height={16} />
-        Pickup available at Zalores Studio — usually ready in 24 hours
+        Pickup available at Zalores Studio, usually ready in 24 hours
       </p>
 
       <button className="link-quiet share-btn" onClick={share}>
@@ -173,7 +173,7 @@ export default function ProductBuy({ product }: { product: Product }) {
           </em>
         </span>
         <button className="btn btn-dark" onClick={handleAdd}>
-          Add to cart — {formatPrice(product.price * qty)}
+          Add to cart · {formatPrice(product.price * qty)}
         </button>
       </div>
     </>

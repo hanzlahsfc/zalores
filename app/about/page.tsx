@@ -6,7 +6,7 @@ import ProductImage from "@/components/ProductImage";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Zalores sells hand-assembled metal sunglasses with real mineral-glass lenses — frames built the slow way, priced honestly.",
+    "Zalores sells hand-assembled metal sunglasses with real mineral-glass lenses, frames built the slow way, priced honestly.",
 };
 
 const stats = [
@@ -39,8 +39,8 @@ export default function AboutPage() {
         <div className="about-copy">
           <h2>Optics first, always.</h2>
           <p>
-            Every frame we sell is hand-assembled — soldered, plated and
-            polished through 200+ individual steps — then fitted with real
+            Every frame we sell is hand-assembled, soldered, plated and
+            polished through 200+ individual steps, then fitted with real
             mineral-glass lenses, because a frame is only as good as what you
             see through it. These are the same frames issued to military
             pilots for decades.
@@ -52,7 +52,7 @@ export default function AboutPage() {
           <h2>Priced for people, not margins.</h2>
           <p>
             Premium eyewear carries 10x markups through distributors and
-            licensing houses. We keep it simple — authorized frames, honest
+            licensing houses. We keep it simple: authorized frames, honest
             prices, and a warranty we actually answer email about.
           </p>
         </div>

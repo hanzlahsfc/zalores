@@ -28,23 +28,23 @@ const perks = [
 const reviews = [
   {
     quote:
-      "The mineral glass is on another level — sharper and clearer than anything I've owned, including pairs twice the price.",
+      "The mineral glass is on another level. Sharper and clearer than anything I've owned, including pairs twice the price.",
     name: "Maya R.",
-    detail: "Aviator — verified buyer",
+    detail: "Aviator · verified buyer",
     rating: 5,
   },
   {
     quote:
       "Cobalt lenses killed the glare off the water completely. First pair I've owned that actually survives a year of fishing.",
     name: "Daniel K.",
-    detail: "Aviator Cobalt — verified buyer",
+    detail: "Aviator Cobalt · verified buyer",
     rating: 5,
   },
   {
     quote:
       "Bayonet temples under a headset for six hours, zero pressure points. Now I get why pilots swear by these.",
     name: "Priya S.",
-    detail: "Concorde — verified buyer",
+    detail: "Concorde · verified buyer",
     rating: 5,
   },
 ];
@@ -53,12 +53,12 @@ const craft = [
   {
     icon: IconLeaf,
     title: "Hand-assembled, one at a time",
-    body: "Every frame passes through 200+ hands-on steps — soldered, polished and inspected before a lens is ever fitted.",
+    body: "Every frame passes through 200+ hands-on steps, soldered, polished and inspected before a lens is ever fitted.",
   },
   {
     icon: IconSun,
     title: "Mineral-glass optics",
-    body: "Real glass lenses, ground for zero distortion and hardened against scratches — not a tinted plastic stamp-out.",
+    body: "Real glass lenses, ground for zero distortion and hardened against scratches, not a tinted plastic stamp-out.",
   },
   {
     icon: IconShield,
@@ -185,20 +185,20 @@ export default function HomePage() {
             <h2>Made the hard way, on purpose.</h2>
             <p>
               Most sunglasses are stamped out in a day. Ours are soldered,
-              plated and polished by hand — then fitted with real mineral-glass
+              plated and polished by hand, then fitted with real mineral-glass
               lenses, because optics are the whole point.
             </p>
             <ul className="check-list">
               <li>
-                <IconCheck width={16} height={16} /> Hand-assembled metal frames
-                — 200+ steps per pair
+                <IconCheck width={16} height={16} /> Hand-assembled metal
+                frames, 200+ steps per pair
               </li>
               <li>
-                <IconCheck width={16} height={16} /> Mineral-glass lenses —
+                <IconCheck width={16} height={16} /> Mineral-glass lenses:
                 sharper and harder than polycarbonate
               </li>
               <li>
-                <IconCheck width={16} height={16} /> Bayonet temples — the
+                <IconCheck width={16} height={16} /> Bayonet temples, the
                 military-spec fit pilots trust
               </li>
             </ul>

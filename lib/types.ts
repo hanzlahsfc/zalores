@@ -7,7 +7,7 @@ export type Silhouette =
   | "sport"
   | "accessory";
 
-/** A purchasable variant — Shopify-style "Color" option. */
+/** A purchasable variant, Shopify-style "Color" option. */
 export interface Colorway {
   id: string;
   name: string;
@@ -24,7 +24,7 @@ export interface Product {
   price: number;
   /** Strikethrough price for promos. */
   compareAt?: number;
-  /** Collection slug — drives shop filters and collection cards. */
+  /** Collection slug, drives shop filters and collection cards. */
   collection: CollectionSlug;
   silhouette: Silhouette;
   /** Purchasable color options. Index 0 is the default. */
@@ -37,7 +37,7 @@ export interface Product {
   stock: number;
   features: string[];
   sku: string;
-  /** Primary image — drop the real photo at public/assets/img/products/<slug>.jpg
+  /** Primary image, drop the real photo at public/assets/img/products/<slug>.jpg
    *  and it is picked up automatically (SVG art is the fallback). Per-colorway
    *  photos live at <slug>-<colorway-id>.jpg. */
   image: string;
@@ -56,7 +56,7 @@ export interface Collection {
 
 export interface CartItem {
   slug: string;
-  /** Colorway id — defaults to the product's first colorway. */
+  /** Colorway id, defaults to the product's first colorway. */
   colorway?: string;
   qty: number;
 }

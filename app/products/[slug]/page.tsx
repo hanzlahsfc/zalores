@@ -22,7 +22,7 @@ export async function generateMetadata({
   const product = getProduct(slug);
   if (!product) return {};
   return {
-    title: `${product.name} — ${product.tagline}`,
+    title: `${product.name} | ${product.tagline}`,
     description: product.description,
   };
 }
@@ -73,7 +73,7 @@ export default async function ProductPage({
 
         {product.stock <= 10 && (
           <p className="stock-note">
-            Selling fast — only {product.stock} left in stock
+            Selling fast: only {product.stock} left in stock
           </p>
         )}
 

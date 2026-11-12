@@ -12,7 +12,7 @@ export default function NewsletterForm() {
   if (done)
     return (
       <p className="newsletter-done">
-        <IconCheck width={18} height={18} /> You&rsquo;re on the list — welcome
+        <IconCheck width={18} height={18} /> You&rsquo;re on the list, welcome
         to {`Zalores`}. Check your inbox for 10% off.
       </p>
     );

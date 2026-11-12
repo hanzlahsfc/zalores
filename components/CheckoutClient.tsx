@@ -35,7 +35,7 @@ export default function CheckoutClient() {
           </span>
           <h1>Order confirmed</h1>
           <p>
-            Thanks — order <strong>{orderId}</strong> is being packed. A
+            Thanks. Order <strong>{orderId}</strong> is being packed. A
             confirmation email is on its way.
           </p>
           <Link href="/shop/" className="btn btn-dark">

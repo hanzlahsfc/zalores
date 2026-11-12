@@ -53,7 +53,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setItems(parsed);
       }
     } catch {
-      /* corrupted storage — start empty */
+      /* corrupted storage, start empty */
     }
     setHydrated(true);
   }, []);

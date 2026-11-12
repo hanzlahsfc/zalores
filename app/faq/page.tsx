@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const faqs = [
   {
     title: "Are the lenses really polarized?",
-    body: "Every frame ships with real mineral-glass lenses — UV400 (100% UVA/UVB) with polarized options on most models. Mineral glass is harder and optically truer than polycarbonate.",
+    body: "Every frame ships with real mineral-glass lenses: UV400 (100% UVA/UVB) with polarized options on most models. Mineral glass is harder and optically truer than polycarbonate.",
   },
   {
     title: "How do I pick the right size?",
@@ -26,15 +26,15 @@ const faqs = [
   },
   {
     title: "What's the return policy?",
-    body: "30 days, unworn, full refund — no questions and no restocking fees. Refunds land within 5 business days of us receiving the return.",
+    body: "30 days, unworn, full refund, no questions and no restocking fees. Refunds land within 5 business days of us receiving the return.",
   },
   {
     title: "What does the warranty cover?",
-    body: "Two years against manufacturing defects: hinges, coatings and finish. Scratched lenses aren't covered, but lifetime discounted replacements are available — just email us.",
+    body: "Two years against manufacturing defects: hinges, coatings and finish. Scratched lenses aren't covered, but lifetime discounted replacements are available, just email us.",
   },
   {
     title: "Can I get prescription lenses?",
-    body: "Not yet — our current frames are plano (non-prescription) sunglasses. Prescription is on the roadmap; join the newsletter to hear first.",
+    body: "Not yet. Our current frames are plano (non-prescription) sunglasses. Prescription is on the roadmap; join the newsletter to hear first.",
   },
 ];
 
@@ -45,7 +45,7 @@ export default function FaqPage() {
         <span className="eyebrow">Good questions</span>
         <h1>FAQ</h1>
         <p className="page-sub">
-          Can&rsquo;t find your answer? <a href="/contact/">Contact us</a> — we
+          Can&rsquo;t find your answer? <a href="/contact/">Contact us</a>, we
           reply within one business day.
         </p>
       </header>

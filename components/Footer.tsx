@@ -11,7 +11,7 @@ export default function Footer() {
         <div>
           <h2 className="footer-news-title">First dibs on new drops.</h2>
           <p className="footer-news-sub">
-            10% off your first order when you join. No spam — just frames worth
+            10% off your first order when you join. No spam, just frames worth
             seeing.
           </p>
         </div>

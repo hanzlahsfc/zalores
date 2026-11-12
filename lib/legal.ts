@@ -21,15 +21,15 @@ export const legalDocs: LegalDoc[] = [
       {
         heading: "Returns",
         body: [
-          "You have 30 days from delivery to return any unworn pair for a full refund — no questions, no restocking fees. Start a return from the link in your order email or by contacting us.",
+          "You have 30 days from delivery to return any unworn pair for a full refund, no questions, no restocking fees. Start a return from the link in your order email or by contacting us.",
           "Refunds are issued to the original payment method within 5 business days of your return arriving at our studio.",
         ],
       },
       {
         heading: "Warranty",
         body: [
-          "Every frame carries a 2-year warranty against manufacturing defects — hinges, coatings, and finish. If something fails under normal use, we repair or replace it free.",
-          "Scratched lenses and accidental damage aren't covered, but reach out anyway — we offer discounted replacements for life-of-product.",
+          "Every frame carries a 2-year warranty against manufacturing defects: hinges, coatings, and finish. If something fails under normal use, we repair or replace it free.",
+          "Scratched lenses and accidental damage aren't covered, but reach out anyway. We offer discounted replacements for life-of-product.",
         ],
       },
     ],

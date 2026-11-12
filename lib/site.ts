@@ -1,13 +1,13 @@
 /**
  * Central brand/site configuration.
- * Rebranding the store later? Edit this file plus lib/products.ts — the whole
+ * Rebranding the store later? Edit this file plus lib/products.ts, the whole
  * site (copy, metadata, checkout, emails-to-be) reads from here.
  */
 export const site = {
   name: "Zalores",
   tagline: "Eyewear, elevated.",
   description:
-    "Hand-assembled metal sunglasses with real mineral-glass lenses. Aviators, limited editions and eyewear accessories — free shipping over $75.",
+    "Hand-assembled metal sunglasses with real mineral-glass lenses. Aviators, limited editions and eyewear accessories. Free shipping over $75.",
   url: "https://zalores.com",
   email: "hello@zalores.com",
   phone: "+1 (555) 013-4200",
@@ -23,7 +23,7 @@ export const site = {
   heroKicker: "Handcrafted American Eyewear",
   heroTitle: "See the world through real glass.",
   heroSub:
-    "Mineral-glass lenses. Hand-assembled frames. Bayonet temples built for the cockpit — and worn everywhere since 1978.",
+    "Mineral-glass lenses. Hand-assembled frames. Bayonet temples built for the cockpit, worn everywhere since 1978.",
 } as const;
 
 export type Site = typeof site;

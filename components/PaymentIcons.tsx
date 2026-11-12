@@ -1,5 +1,5 @@
 /**
- * Payment brand marks as compact SVG pills — the row every Shopify footer,
+ * Payment brand marks as compact SVG pills, the row every Shopify footer,
  * PDP and checkout carries.
  */
 export default function PaymentIcons({ light = false }: { light?: boolean }) {

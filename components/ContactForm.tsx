@@ -38,7 +38,7 @@ export default function ContactForm() {
         else setError(true);
       }}
     >
-      {/* honeypot — bots fill it, humans never see it */}
+      {/* honeypot, bots fill it, humans never see it */}
       <input
         type="text"
         name="website"
@@ -76,7 +76,7 @@ export default function ContactForm() {
       </label>
       {error && (
         <p className="form-error">
-          Something went wrong — please try again or email us directly.
+          Something went wrong. Please try again or email us directly.
         </p>
       )}
       <button type="submit" className="btn btn-dark btn-lg" disabled={busy}>

@@ -1,5 +1,5 @@
 /* ============================================================
-   Zalores — design system
+   Zalores design system
    Warm editorial e-commerce. Fraunces display + Inter body.
    ============================================================ */
 
@@ -1807,6 +1807,9 @@ legend {
     grid-template-columns: 1fr;
     gap: 44px;
   }
+  .product-grid.grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
   .checkout {
     grid-template-columns: 1fr;
   }
@@ -1844,8 +1847,32 @@ legend {
   .stats-row {
     grid-template-columns: 1fr;
   }
-  .product-grid.grid-3 {
-    grid-template-columns: repeat(2, 1fr);
+  .product-grid {
+    gap: 14px;
+  }
+  .announcement {
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+    padding: 8px 12px;
+  }
+  .search-modal {
+    padding: 18px 16px;
+  }
+  .sticky-buy {
+    gap: 10px;
+    padding: 10px 14px;
+  }
+  .sticky-thumb {
+    width: 48px;
+    height: 48px;
+  }
+  .sticky-info em {
+    display: none;
+  }
+  .sticky-buy .btn {
+    padding: 12px 15px;
+    font-size: 14px;
+    white-space: nowrap;
   }
   .section-head {
     flex-direction: column;
@@ -1881,6 +1908,16 @@ legend {
   .perks-inner {
     grid-template-columns: 1fr;
     gap: 16px;
+  }
+  .order-upsell ul {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+  }
+  .buy-row {
+    flex-wrap: wrap;
+  }
+  .buy-row .qty-stepper {
+    margin-top: 0;
   }
 }
 

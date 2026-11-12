@@ -1,8 +1,8 @@
 /**
  * Storefront form submissions → Supabase edge function.
  * The function URL is public-by-design (no secrets client-side); it validates
- * and writes to private tables server-side. When the env var is absent —
- * e.g. a static preview build — submissions resolve as no-ops so the UI
+ * and writes to private tables server-side. When the env var is absent.
+ * e.g. a static preview build, submissions resolve as no-ops so the UI
  * keeps its success states.
  */
 

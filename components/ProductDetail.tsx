@@ -6,7 +6,7 @@ import ProductImage from "./ProductImage";
 
 /**
  * Holds the selected colorway for the whole product detail view so the
- * gallery, swatch picker and buy box stay in sync — like a Shopify
+ * gallery, swatch picker and buy box stay in sync, like a Shopify
  * variant selector updating media + options together.
  */
 

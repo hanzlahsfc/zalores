@@ -2,11 +2,11 @@ import type { Collection, Product } from "./types";
 
 /**
  * The entire catalog lives here. To pivot the store to different products,
- * replace this file — every page, filter, cart line and checkout item is
+ * replace this file, every page, filter, cart line and checkout item is
  * generated from it.
  *
  * Current lineup: genuine Randolph Engineering frames + accessories.
- * Photos live in public/assets/img/products/ — per-colorway shots resolve
+ * Photos live in public/assets/img/products/, per-colorway shots resolve
  * automatically at <slug>-<colorway-id>.jpg (see ProductImage).
  */
 export const products: Product[] = [
@@ -15,7 +15,7 @@ export const products: Product[] = [
     name: "Aviator",
     tagline: "The original, hand-assembled since 1978.",
     description:
-      "The frame that built the Randolph Engineering name — a hand-assembled aviator in 23K gold plate with mineral-glass lenses and signature bayonet temples. Issued to military pilots for decades, finished one at a time.",
+      "The frame that built the Randolph Engineering name. A hand-assembled aviator in 23K gold plate with mineral-glass lenses and signature bayonet temples. Issued to military pilots for decades, finished one at a time.",
     price: 259,
     collection: "classics",
     silhouette: "aviator",
@@ -30,9 +30,9 @@ export const products: Product[] = [
     badge: "Best Seller",
     stock: 34,
     features: [
-      "Hand-assembled metal frame — 200+ steps, one at a time",
-      "Mineral-glass lenses — scratch-resistant, distortion-free",
-      "Bayonet temples — zero pressure under headgear",
+      "Hand-assembled metal frame, 200+ steps, one at a time",
+      "Mineral-glass lenses, scratch-resistant, distortion-free",
+      "Bayonet temples, zero pressure under headgear",
       "Includes leather case, microfiber cloth & care kit",
     ],
     sku: "ZL-AVT",
@@ -48,7 +48,7 @@ export const products: Product[] = [
     name: "Concorde",
     tagline: "The teardrop that outran the jet age.",
     description:
-      "Named for the aircraft it outlived, the Concorde wraps mineral-glass lenses in a sweeping gunmetal teardrop. Bigger coverage than the Aviator, same bayonet temples — built for open sky and long light.",
+      "Named for the aircraft it outlived, the Concorde wraps mineral-glass lenses in a sweeping gunmetal teardrop. Bigger coverage than the Aviator, same bayonet temples, built for open sky and long light.",
     price: 269,
     collection: "classics",
     silhouette: "aviator",
@@ -60,7 +60,7 @@ export const products: Product[] = [
     reviewCount: 1632,
     stock: 21,
     features: [
-      "Deep teardrop lenses — wider field of coverage",
+      "Deep teardrop lenses, wider field of coverage",
       "SkyTec mineral glass with blue-green mirror",
       "Bayonet temples, adjustable nose pads",
       "Hand-assembled in Massachusetts, USA",
@@ -108,7 +108,7 @@ export const products: Product[] = [
     name: "Shelby Aviator II",
     tagline: "Carroll Shelby's frame, blacked out.",
     description:
-      "A collaboration frame in black chrome with a blue-violet gradient lens — the same silhouette Carroll Shelby wore trackside. Small-batch run; when it's gone, it's gone.",
+      "A collaboration frame in black chrome with a blue-violet gradient lens. The same silhouette Carroll Shelby wore trackside. Small-batch run; when it's gone, it's gone.",
     price: 449,
     collection: "limited",
     silhouette: "aviator",
@@ -139,7 +139,7 @@ export const products: Product[] = [
     name: "Leather Retainer Strap",
     tagline: "Full-grain leather, snap-fit, stays put.",
     description:
-      "A hand-stitched full-grain leather retainer that snaps to your temples and keeps your frames exactly where you left them — around your neck, not on the asphalt.",
+      "A hand-stitched full-grain leather retainer that snaps to your temples and keeps your frames exactly where you left them: around your neck, not on the asphalt.",
     price: 39,
     collection: "accessories",
     silhouette: "accessory",
@@ -154,7 +154,7 @@ export const products: Product[] = [
     stock: 52,
     features: [
       "Full-grain leather, saddle-stitched by hand",
-      "Snap-fit ends — secures to most metal temples",
+      "Snap-fit ends, secures to most metal temples",
       "Ages beautifully with wear",
     ],
     sku: "ZL-STR",
@@ -169,7 +169,7 @@ export const products: Product[] = [
     name: "Travel Case",
     tagline: "Three pairs, one indestructible case.",
     description:
-      "A pebbled leather travel case with three padded slots and a plush interior — keeps a small collection safe in a carry-on or a glovebox. Embossed 'Handcrafted American Eyewear' inside the lid.",
+      "A pebbled leather travel case with three padded slots and a plush interior. Keeps a small collection safe in a carry-on or a glovebox. Embossed 'Handcrafted American Eyewear' inside the lid.",
     price: 65,
     collection: "accessories",
     silhouette: "accessory",
@@ -198,7 +198,7 @@ export const products: Product[] = [
     name: "Lens Cleaning Kit",
     tagline: "Everything mineral glass asks for.",
     description:
-      "A complete care kit — lens spray, microfiber cloth and a soft brush — sized for a glovebox or desk drawer. Because a $300 lens deserves better than a t-shirt hem.",
+      "A complete care kit: lens spray, microfiber cloth and a soft brush, sized for for a glovebox or desk drawer. Because a $300 lens deserves better than a t-shirt hem.",
     price: 25,
     collection: "accessories",
     silhouette: "accessory",
@@ -212,7 +212,7 @@ export const products: Product[] = [
     features: [
       "Ammonia-free lens spray, safe on all coatings",
       "Two premium microfiber cloths",
-      "Compact — travels in the case pocket",
+      "Compact, travels in the case pocket",
     ],
     sku: "ZL-LCK",
     image: "/assets/img/products/lens-cleaning-kit.jpg",
@@ -223,7 +223,7 @@ export const products: Product[] = [
     name: "Microfiber Cloth 3-Pack",
     tagline: "The humble hero of clear lenses.",
     description:
-      "Three dense-weave microfiber cloths — one for the case, one for the car, one for the pocket you're currently patting down. The cheapest insurance your lenses can buy.",
+      "Three dense-weave microfiber cloths: one for the case, one for the car, one for the pocket you're currently patting down. The cheapest insurance your lenses can buy.",
     price: 15,
     collection: "accessories",
     silhouette: "accessory",
@@ -235,7 +235,7 @@ export const products: Product[] = [
     reviewCount: 203,
     stock: 80,
     features: [
-      "Dense-weave microfiber — lifts oil, no smearing",
+      "Dense-weave microfiber, lifts oil, no smearing",
       "Safe on mineral glass and all coatings",
       "Machine washable, lasts for years",
     ],
@@ -249,7 +249,7 @@ export const collections: Collection[] = [
   {
     slug: "classics",
     name: "The Classics",
-    description: "Hand-assembled aviators — the frames that built the name.",
+    description: "Hand-assembled aviators, the frames that built the name.",
     image: "/assets/img/collections/classics.jpg",
   },
   {
@@ -261,7 +261,7 @@ export const collections: Collection[] = [
   {
     slug: "accessories",
     name: "Accessories",
-    description: "Cases, straps and care kits — keep your pair pristine.",
+    description: "Cases, straps and care kits, keep your pair pristine.",
     image: "/assets/img/collections/accessories.jpg",
   },
 ];

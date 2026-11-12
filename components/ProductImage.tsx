@@ -41,7 +41,7 @@ export default function ProductImage({
   const image = candidates.find((c) => !failed.includes(c));
 
   // If the image already finished (or failed) before hydration, the load/
-  // error events won't refire — sync state from the element instead.
+  // error events won't refire, sync state from the element instead.
   useEffect(() => {
     const el = imgRef.current;
     if (!el || !image) return;
@@ -57,7 +57,7 @@ export default function ProductImage({
         <img
           ref={imgRef}
           src={image}
-          alt={`${product.name} in ${cw.name} — ${product.tagline}`}
+          alt={`${product.name} in ${cw.name}, ${product.tagline}`}
           loading={priority ? "eager" : "lazy"}
           onLoad={() => setLoaded(image)}
           onError={() => setFailed((f) => [...f, image])}
