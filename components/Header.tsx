@@ -37,7 +37,17 @@ export default function Header() {
   return (
     <>
       <div className="announcement">
-        <p>{site.announcement}</p>
+        <p>
+          {site.announcement.split("·").map((seg, i, arr) => (
+            <span
+              key={i}
+              className={i === arr.length - 1 ? "announcement-opt" : undefined}
+            >
+              {i > 0 ? " · " : ""}
+              {seg.trim()}
+            </span>
+          ))}
+        </p>
       </div>
       <header className={`site-header${scrolled ? " scrolled" : ""}`}>
         <div className="header-inner">
