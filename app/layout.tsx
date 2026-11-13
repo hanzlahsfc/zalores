@@ -1,23 +1,25 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Assistant } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
 import { CartProvider } from "@/components/CartProvider";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
 
-const body = Inter({ subsets: ["latin"], variable: "--font-body" });
+const body = Assistant({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-body",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} | ${site.tagline}`,
-    template: `%s · ${site.name}`,
+    default: site.name,
+    template: `%s – ${site.name}`,
   },
   description: site.description,
   openGraph: {
-    title: `${site.name} | ${site.tagline}`,
+    title: site.name,
     description: site.description,
     images: ["/assets/img/og.jpg"],
   },
@@ -32,9 +34,7 @@ export default function RootLayout({
     <html lang="en" className={body.variable}>
       <body>
         <CartProvider>
-          <Header />
-          <main id="main">{children}</main>
-          <Footer />
+          {children}
           <CartDrawer />
         </CartProvider>
       </body>

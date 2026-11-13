@@ -3,13 +3,9 @@ import CheckoutClient from "@/components/CheckoutClient";
 
 export const metadata: Metadata = {
   title: "Checkout",
-  description: "Secure checkout.",
+  robots: { index: false },
 };
 
 export default function CheckoutPage() {
-  return (
-    <div className="page-wrap page-narrow">
-      <CheckoutClient />
-    </div>
-  );
+  return <CheckoutClient />;
 }

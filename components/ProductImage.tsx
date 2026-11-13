@@ -18,12 +18,14 @@ export default function ProductImage({
   uid,
   colorway,
   priority,
+  className,
 }: {
   product: Product;
   src?: string;
   uid: string;
   colorway?: Colorway;
   priority?: boolean;
+  className?: string;
 }) {
   const [failed, setFailed] = useState<string[]>([]);
   const [loaded, setLoaded] = useState<string | null>(null);
@@ -50,7 +52,7 @@ export default function ProductImage({
   }, [image]);
 
   return (
-    <span className="pimg">
+    <span className={className ? `pimg ${className}` : "pimg"}>
       <ProductArt product={product} uid={uid} colorway={cw} />
       {image && (
         // eslint-disable-next-line @next/next/no-img-element

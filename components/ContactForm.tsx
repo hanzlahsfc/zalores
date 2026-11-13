@@ -11,11 +11,9 @@ export default function ContactForm() {
 
   if (sent)
     return (
-      <div className="form-done">
-        <IconCheck width={26} height={26} />
-        <h2>Message sent</h2>
-        <p>We&rsquo;ll get back to you within one business day.</p>
-      </div>
+      <p className="form-message" role="status">
+        <IconCheck /> Thanks for contacting us. We&rsquo;ll get back to you as soon as possible.
+      </p>
     );
 
   return (
@@ -27,11 +25,12 @@ export default function ContactForm() {
         setBusy(true);
         setError(false);
         const f = new FormData(e.currentTarget);
+        const phone = String(f.get("phone") ?? "").trim();
         const ok = await submitContact({
           name: String(f.get("name")),
           email: String(f.get("email")),
-          subject: String(f.get("subject")),
-          message: String(f.get("message")),
+          subject: "Contact form",
+          message: `${String(f.get("message"))}${phone ? `\n\nPhone: ${phone}` : ""}`,
         });
         setBusy(false);
         if (ok) setSent(true);
@@ -39,48 +38,28 @@ export default function ContactForm() {
       }}
     >
       {/* honeypot, bots fill it, humans never see it */}
-      <input
-        type="text"
-        name="website"
-        tabIndex={-1}
-        autoComplete="off"
-        className="hp-field"
-        aria-hidden="true"
-      />
+      <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hp-field" aria-hidden="true" />
       <div className="field-row">
-        <label className="field">
-          <span>Name</span>
-          <input name="name" required autoComplete="name" />
-        </label>
-        <label className="field">
-          <span>Email</span>
-          <input name="email" type="email" required autoComplete="email" />
-        </label>
+        <div className="field">
+          <input id="ContactForm-name" name="name" className="field__input" placeholder=" " required autoComplete="name" />
+          <label className="field__label" htmlFor="ContactForm-name">Name</label>
+        </div>
+        <div className="field">
+          <input id="ContactForm-email" name="email" type="email" className="field__input" placeholder=" " required autoComplete="email" />
+          <label className="field__label" htmlFor="ContactForm-email">Email *</label>
+        </div>
       </div>
-      <label className="field">
-        <span>Subject</span>
-        <select name="subject" required defaultValue="">
-          <option value="" disabled>
-            Choose a topic
-          </option>
-          <option>Order question</option>
-          <option>Returns &amp; exchanges</option>
-          <option>Product &amp; fit</option>
-          <option>Wholesale</option>
-          <option>Something else</option>
-        </select>
-      </label>
-      <label className="field">
-        <span>Message</span>
-        <textarea name="message" required rows={5} />
-      </label>
-      {error && (
-        <p className="form-error">
-          Something went wrong. Please try again or email us directly.
-        </p>
-      )}
-      <button type="submit" className="btn btn-dark btn-lg" disabled={busy}>
-        {busy ? "Sending…" : "Send message"}
+      <div className="field">
+        <input id="ContactForm-phone" name="phone" type="tel" className="field__input" placeholder=" " autoComplete="tel" />
+        <label className="field__label" htmlFor="ContactForm-phone">Phone number</label>
+      </div>
+      <div className="field">
+        <textarea id="ContactForm-body" name="message" className="field__input" placeholder=" " rows={6} required />
+        <label className="field__label" htmlFor="ContactForm-body">Comment</label>
+      </div>
+      {error && <p className="form-error">Something went wrong. Please try again or email us directly.</p>}
+      <button type="submit" className="button" disabled={busy}>
+        {busy ? "Sending…" : "Send"}
       </button>
     </form>
   );

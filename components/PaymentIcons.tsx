@@ -1,48 +1,84 @@
-/**
- * Payment brand marks as compact SVG pills, the row every Shopify footer,
- * PDP and checkout carries.
- */
-export default function PaymentIcons({ light = false }: { light?: boolean }) {
-  const cls = `pay-icon${light ? " light" : ""}`;
+import type { ReactNode } from "react";
+
+/** Payment marks in the 38x24 card format Shopify themes render. */
+const marks: { title: string; body: ReactNode }[] = [
+  {
+    title: "American Express",
+    body: (
+      <>
+        <rect x=".5" y=".5" width="37" height="23" rx="3" style={{ fill: "#016fd0", stroke: "#016fd0" }} />
+        <text x="19" y="15.5" textAnchor="middle" fontSize="8" fontWeight="800" style={{ fill: "#fff" }}>AMEX</text>
+      </>
+    ),
+  },
+  {
+    title: "Apple Pay",
+    body: (
+      <>
+        <rect x=".5" y=".5" width="37" height="23" rx="3" />
+        <text x="19" y="15.5" textAnchor="middle" fontSize="8.5" fontWeight="600" style={{ fill: "#000" }}>Pay</text>
+      </>
+    ),
+  },
+  {
+    title: "Google Pay",
+    body: (
+      <>
+        <rect x=".5" y=".5" width="37" height="23" rx="3" />
+        <text x="19" y="15.5" textAnchor="middle" fontSize="8.5" fontWeight="600" style={{ fill: "#5f6368" }}>G Pay</text>
+      </>
+    ),
+  },
+  {
+    title: "Mastercard",
+    body: (
+      <>
+        <rect x=".5" y=".5" width="37" height="23" rx="3" />
+        <circle cx="15" cy="12" r="7" fill="#eb001b" />
+        <circle cx="23" cy="12" r="7" fill="#f79e1b" fillOpacity=".9" />
+      </>
+    ),
+  },
+  {
+    title: "PayPal",
+    body: (
+      <>
+        <rect x=".5" y=".5" width="37" height="23" rx="3" />
+        <text x="19" y="15.5" textAnchor="middle" fontSize="8" fontWeight="800" fontStyle="italic" style={{ fill: "#003087" }}>PayPal</text>
+      </>
+    ),
+  },
+  {
+    title: "Shop Pay",
+    body: (
+      <>
+        <rect x=".5" y=".5" width="37" height="23" rx="3" style={{ fill: "#5a31f4", stroke: "#5a31f4" }} />
+        <text x="19" y="15.5" textAnchor="middle" fontSize="8.5" fontWeight="800" style={{ fill: "#fff" }}>shop</text>
+      </>
+    ),
+  },
+  {
+    title: "Visa",
+    body: (
+      <>
+        <rect x=".5" y=".5" width="37" height="23" rx="3" />
+        <text x="19" y="16" textAnchor="middle" fontSize="10" fontWeight="800" fontStyle="italic" style={{ fill: "#1a1f71" }}>VISA</text>
+      </>
+    ),
+  },
+];
+
+export default function PaymentIcons({ only }: { only?: string[] }) {
+  const list = only ? marks.filter((m) => only.includes(m.title)) : marks;
   return (
-    <span className="pay-row" aria-label="Accepted payment methods">
-      <span className={cls} title="Visa">
-        <svg viewBox="0 0 38 24" width="38" height="24" aria-hidden="true">
-          <rect x=".5" y=".5" width="37" height="23" rx="4" />
-          <text x="19" y="16" textAnchor="middle" fontSize="10" fontWeight="800" fontStyle="italic" letterSpacing="1">VISA</text>
-        </svg>
-      </span>
-      <span className={cls} title="Mastercard">
-        <svg viewBox="0 0 38 24" width="38" height="24" aria-hidden="true">
-          <rect x=".5" y=".5" width="37" height="23" rx="4" />
-          <circle cx="15" cy="12" r="7" fill="#eb001b" />
-          <circle cx="23" cy="12" r="7" fill="#f79e1b" opacity=".85" />
-        </svg>
-      </span>
-      <span className={cls} title="American Express">
-        <svg viewBox="0 0 38 24" width="38" height="24" aria-hidden="true">
-          <rect x=".5" y=".5" width="37" height="23" rx="4" />
-          <text x="19" y="15.5" textAnchor="middle" fontSize="8.5" fontWeight="800" letterSpacing=".5">AMEX</text>
-        </svg>
-      </span>
-      <span className={cls} title="PayPal">
-        <svg viewBox="0 0 38 24" width="38" height="24" aria-hidden="true">
-          <rect x=".5" y=".5" width="37" height="23" rx="4" />
-          <text x="19" y="15" textAnchor="middle" fontSize="8" fontWeight="800" fontStyle="italic">PayPal</text>
-        </svg>
-      </span>
-      <span className={cls} title="Apple Pay">
-        <svg viewBox="0 0 38 24" width="38" height="24" aria-hidden="true">
-          <rect x=".5" y=".5" width="37" height="23" rx="4" />
-          <text x="19" y="15" textAnchor="middle" fontSize="8" fontWeight="700">Apple Pay</text>
-        </svg>
-      </span>
-      <span className={cls} title="Google Pay">
-        <svg viewBox="0 0 38 24" width="38" height="24" aria-hidden="true">
-          <rect x=".5" y=".5" width="37" height="23" rx="4" />
-          <text x="19" y="15" textAnchor="middle" fontSize="8.5" fontWeight="700">G Pay</text>
-        </svg>
-      </span>
-    </span>
+    <ul className="list-payment" role="list" aria-label="Payment methods">
+      {list.map((m) => (
+        <li key={m.title} className="pay-icon">
+          <svg viewBox="0 0 38 24" role="img" aria-label={m.title}>
+            {m.body}
+          </svg>
+        </li>
+      ))}
+    </ul>
   );
 }

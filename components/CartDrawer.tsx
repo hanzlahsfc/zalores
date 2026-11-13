@@ -6,158 +6,161 @@ import { site } from "@/lib/site";
 import { formatPrice } from "@/lib/format";
 import { useCart } from "./CartProvider";
 import ProductImage from "./ProductImage";
-import PaymentIcons from "./PaymentIcons";
-import { IconClose, IconMinus, IconPlus, IconTruck } from "./Icons";
+import { IconCaret, IconClose, IconMinus, IconPlus, IconTrash } from "./Icons";
 
 export default function CartDrawer() {
   const { lines, subtotal, isOpen, closeCart, setQty, remove } = useCart();
   const [noteOpen, setNoteOpen] = useState(false);
   const threshold = site.freeShippingThreshold;
   const remaining = Math.max(0, threshold - subtotal);
-  const progress = Math.min(100, (subtotal / threshold) * 100);
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && closeCart();
+    if (isOpen) window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
     };
-  }, [isOpen]);
+  }, [isOpen, closeCart]);
 
   return (
     <>
-      {isOpen && <div className="scrim" onClick={closeCart} />}
-      <aside
-        className={`cart-drawer${isOpen ? " open" : ""}`}
+      {isOpen && <div className="overlay drawer-overlay" onClick={closeCart} />}
+      <div
+        className={`drawer${isOpen ? " open" : ""}`}
         role="dialog"
         aria-modal="true"
-        aria-label="Shopping cart"
+        aria-label="Your cart"
       >
-        <div className="cart-head">
-          <h2>Your cart</h2>
-          <button className="icon-btn" aria-label="Close cart" onClick={closeCart}>
-            <IconClose width={22} height={22} />
-          </button>
-        </div>
-
         {lines.length === 0 ? (
-          <div className="cart-empty">
-            <p>Your cart is empty.</p>
-            <Link href="/shop/" className="btn btn-dark" onClick={closeCart}>
-              Shop the collection
-            </Link>
-          </div>
+          <>
+            <div className="drawer__header" style={{ justifyContent: "flex-end" }}>
+              <button className="icon-btn" aria-label="Close" onClick={closeCart}>
+                <IconClose />
+              </button>
+            </div>
+            <div className="drawer__empty">
+              <h2>Your cart is empty</h2>
+              <Link href="/shop/" className="button" onClick={closeCart}>
+                Continue shopping
+              </Link>
+            </div>
+          </>
         ) : (
           <>
-            <div className="ship-progress">
-              <p>
-                {remaining > 0 ? (
-                  <>
-                    You&rsquo;re <strong>{formatPrice(remaining)}</strong> away
-                    from free shipping
-                  </>
-                ) : (
-                  <>
-                    <IconTruck width={16} height={16} /> You&rsquo;ve unlocked
-                    free shipping
-                  </>
-                )}
-              </p>
-              <div className="ship-bar">
-                <span style={{ width: `${progress}%` }} />
-              </div>
+            <div className="drawer__header">
+              <h2>Your cart</h2>
+              <button className="icon-btn" aria-label="Close" onClick={closeCart}>
+                <IconClose />
+              </button>
             </div>
 
-            <ul className="cart-lines">
-              {lines.map(({ key, product, colorway, qty }) => (
-                <li key={key} className="cart-line">
-                  <Link
-                    href={`/products/${product.slug}/`}
-                    className="cart-thumb"
-                    onClick={closeCart}
-                  >
-                    <ProductImage
-                      product={product}
-                      colorway={colorway}
-                      uid={`ct-${key}`}
-                    />
-                  </Link>
-                  <div className="cart-line-info">
+            <div className="drawer__body">
+              <div className="free-shipping">
+                {remaining > 0 ? (
+                  <>You are {formatPrice(remaining)} away from free shipping</>
+                ) : (
+                  <>Your order qualifies for free shipping</>
+                )}
+                <div className="free-shipping__bar">
+                  <span style={{ width: `${Math.min(100, (subtotal / threshold) * 100)}%` }} />
+                </div>
+              </div>
+
+              <div className="cart-items__head">
+                <span>Product</span>
+                <span>Total</span>
+              </div>
+              <ul role="list">
+                {lines.map(({ key, product, colorway, qty }) => (
+                  <li key={key} className="cart-item">
                     <Link
                       href={`/products/${product.slug}/`}
-                      className="cart-line-name"
+                      className="cart-item__media"
                       onClick={closeCart}
+                      tabIndex={-1}
                     >
-                      {product.name}
+                      <ProductImage product={product} colorway={colorway} uid={`ct-${key}`} />
                     </Link>
-                    <span className="cart-line-meta">
-                      {colorway.name} · {colorway.lensName}
-                    </span>
-                    <div className="qty-stepper">
-                      <button
-                        aria-label="Decrease quantity"
-                        onClick={() => setQty(key, qty - 1)}
+                    <div>
+                      <Link
+                        href={`/products/${product.slug}/`}
+                        className="cart-item__name"
+                        onClick={closeCart}
                       >
-                        <IconMinus width={14} height={14} />
-                      </button>
-                      <span>{qty}</span>
-                      <button
-                        aria-label="Increase quantity"
-                        onClick={() => setQty(key, qty + 1)}
-                      >
-                        <IconPlus width={14} height={14} />
-                      </button>
+                        {product.name}
+                      </Link>
+                      <div className="cart-item__price">{formatPrice(product.price)}</div>
+                      {product.colorways.length > 1 && (
+                        <dl className="product-option">
+                          <div>
+                            <dt style={{ display: "inline" }}>Frame: </dt>
+                            <dd style={{ display: "inline" }}>{colorway.name}</dd>
+                          </div>
+                          <div>
+                            <dt style={{ display: "inline" }}>Lens: </dt>
+                            <dd style={{ display: "inline" }}>{colorway.lensName}</dd>
+                          </div>
+                        </dl>
+                      )}
+                      <div className="cart-item__quantity">
+                        <div className="quantity quantity--sm">
+                          <button aria-label={`Decrease quantity for ${product.name}`} onClick={() => setQty(key, qty - 1)}>
+                            <IconMinus />
+                          </button>
+                          <span>{qty}</span>
+                          <button aria-label={`Increase quantity for ${product.name}`} onClick={() => setQty(key, Math.min(10, qty + 1))}>
+                            <IconPlus />
+                          </button>
+                        </div>
+                        <button className="icon-btn" aria-label={`Remove ${product.name}`} onClick={() => remove(key)}>
+                          <IconTrash />
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="cart-line-right">
-                    <span className="cart-line-price">
-                      {formatPrice(product.price * qty)}
-                    </span>
-                    <button className="link-quiet" onClick={() => remove(key)}>
-                      Remove
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
+                    <div className="cart-item__total">{formatPrice(product.price * qty)}</div>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-            <div className="cart-foot">
+            <div className="drawer__footer">
               <button
-                className="cart-note-toggle"
+                type="button"
+                className="cart-note__toggle"
                 onClick={() => setNoteOpen((v) => !v)}
                 aria-expanded={noteOpen}
               >
-                {noteOpen ? "Hide order note" : "Add an order note"}
+                Order special instructions
+                <IconCaret style={{ transform: noteOpen ? "rotate(180deg)" : undefined }} />
               </button>
               {noteOpen && (
-                <textarea
-                  className="cart-note"
-                  rows={2}
-                  placeholder="Special instructions for your order"
-                />
+                <div className="field cart-note__field">
+                  <textarea id="CartNote" className="field__input" placeholder=" " rows={2} />
+                  <label className="field__label" htmlFor="CartNote">
+                    Order special instructions
+                  </label>
+                </div>
               )}
-              <div className="cart-total-row">
-                <span>Subtotal</span>
-                <strong>{formatPrice(subtotal)}</strong>
+              <div className="totals">
+                <h3>Estimated total</h3>
+                <span className="totals__value">{formatPrice(subtotal)} USD</span>
               </div>
-              <p className="cart-note">
-                Tax included. Shipping, taxes, and discount codes calculated at
-                checkout.
+              <p className="tax-note">
+                Taxes, discounts and{" "}
+                <Link href="/policies/shipping-returns/" className="link" onClick={closeCart}>
+                  shipping
+                </Link>{" "}
+                calculated at checkout.
               </p>
-              <Link
-                href="/checkout/"
-                className="btn btn-dark btn-block"
-                onClick={closeCart}
-              >
+              <Link href="/checkout/" className="button button--full" onClick={closeCart}>
                 Check out
               </Link>
-              <PaymentIcons />
-              <button className="link-quiet cart-continue" onClick={closeCart}>
-                or continue shopping
-              </button>
             </div>
           </>
         )}
-      </aside>
+      </div>
     </>
   );
 }

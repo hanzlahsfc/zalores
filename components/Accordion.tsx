@@ -1,30 +1,34 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { IconPlus } from "./Icons";
+import { IconCaret } from "./Icons";
 
 export default function Accordion({
   items,
 }: {
-  items: { title: string; body: ReactNode }[];
+  items: {
+    title: string;
+    body: ReactNode;
+    icon?: ReactNode;
+  }[];
 }) {
-  const [open, setOpen] = useState<number | null>(0);
+  const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <div className="accordion">
+    <div>
       {items.map((item, i) => (
-        <div key={i} className={`acc-item${open === i ? " open" : ""}`}>
+        <div key={i} className={`accordion${open === i ? " open" : ""}`}>
           <button
-            className="acc-head"
+            type="button"
+            className="accordion__summary"
             aria-expanded={open === i}
             onClick={() => setOpen(open === i ? null : i)}
           >
+            {item.icon}
             <span>{item.title}</span>
-            <IconPlus width={16} height={16} className="acc-icon" />
+            <IconCaret className="accordion__caret" />
           </button>
-          <div className="acc-body">
-            <div className="acc-body-inner">{item.body}</div>
-          </div>
+          {open === i && <div className="accordion__content rte">{item.body}</div>}
         </div>
       ))}
     </div>

@@ -1,22 +1,22 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import type { Colorway, Product } from "@/lib/types";
 import ProductImage from "./ProductImage";
+import { IconArrow, IconChevronLeft } from "./Icons";
 
 /**
- * Holds the selected colorway for the whole product detail view so the
- * gallery, swatch picker and buy box stay in sync, like a Shopify
- * variant selector updating media + options together.
+ * Holds the selected variant for the product page so the media gallery and
+ * the product form stay in sync, the way a Shopify variant change swaps the
+ * featured media.
  */
-
-const ColorwayCtx = createContext<{
+const VariantCtx = createContext<{
   colorway: Colorway;
   setColorway: (c: Colorway) => void;
 } | null>(null);
 
 export function useColorway() {
-  const ctx = useContext(ColorwayCtx);
+  const ctx = useContext(VariantCtx);
   if (!ctx) throw new Error("useColorway outside ProductDetail");
   return ctx;
 }
@@ -30,62 +30,75 @@ export default function ProductDetail({
 }) {
   const [colorway, setColorway] = useState(product.colorways[0]);
   const [active, setActive] = useState(0);
+  const touchX = useRef<number | null>(null);
+  const media = [undefined, ...product.gallery];
 
-  const media = [product.image, ...product.gallery];
+  useEffect(() => setActive(0), [colorway.id]);
+
+  const go = (d: number) => setActive((i) => (i + d + media.length) % media.length);
 
   return (
-    <ColorwayCtx.Provider value={{ colorway, setColorway }}>
-      <div className="pdp">
-        <div className="pdp-gallery">
-          <div className="pdp-main">
-            {product.badge && (
-              <span
-                className={`badge badge-${product.badge
-                  .toLowerCase()
-                  .replace(" ", "-")}`}
-              >
-                {product.badge}
-              </span>
-            )}
-            {active === 0 ? (
-              <ProductImage
-                key={colorway.id}
-                product={product}
-                colorway={colorway}
-                uid={`pdp-${product.slug}-${colorway.id}`}
-                priority
-              />
-            ) : (
-              <ProductImage
-                product={product}
-                colorway={colorway}
-                src={media[active]}
-                uid={`pdp-g${active}-${product.slug}`}
-              />
-            )}
+    <VariantCtx.Provider value={{ colorway, setColorway }}>
+      <section className="product">
+        <div className="product__media-wrapper">
+          <div
+            className="product__media-main"
+            onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
+            onTouchEnd={(e) => {
+              if (touchX.current === null) return;
+              const dx = e.changedTouches[0].clientX - touchX.current;
+              if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+              touchX.current = null;
+            }}
+          >
+            <ProductImage
+              key={`${colorway.id}-${active}`}
+              product={product}
+              colorway={colorway}
+              src={media[active]}
+              uid={`pdp-${product.slug}-${colorway.id}-${active}`}
+              priority={active === 0}
+            />
           </div>
-          <div className="pdp-thumbs">
-            {media.map((_, i) => (
-              <button
-                key={i}
-                className={`pdp-thumb${active === i ? " active" : ""}`}
-                style={{ background: product.tint }}
-                onClick={() => setActive(i)}
-                aria-label={`View image ${i + 1}`}
-              >
-                <ProductImage
-                  product={product}
-                  colorway={colorway}
-                  src={i === 0 ? undefined : media[i]}
-                  uid={`pdp-t${i}-${product.slug}-${colorway.id}`}
-                />
-              </button>
+
+          <div className="slider-buttons">
+            <button type="button" className="icon-btn" aria-label="Previous slide" onClick={() => go(-1)}>
+              <IconChevronLeft />
+            </button>
+            <span className="slider-counter">
+              {active + 1} / {media.length}
+            </span>
+            <button type="button" className="icon-btn" aria-label="Next slide" onClick={() => go(1)}>
+              <IconArrow />
+            </button>
+          </div>
+
+          <ul className="thumbnail-list" role="list">
+            {media.map((src, i) => (
+              <li key={i}>
+                <button
+                  type="button"
+                  className="thumbnail"
+                  aria-current={active === i}
+                  aria-label={`Load image ${i + 1} in gallery view`}
+                  onClick={() => setActive(i)}
+                >
+                  <ProductImage
+                    product={product}
+                    colorway={colorway}
+                    src={src}
+                    uid={`pdp-t${i}-${product.slug}-${colorway.id}`}
+                  />
+                </button>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
 
-        <div className="pdp-info">{children}</div>
-      </div>
-    </ColorwayCtx.Provider>
+        <div className="product__info-wrapper">
+          <div className="product__info-container">{children}</div>
+        </div>
+      </section>
+    </VariantCtx.Provider>
   );
 }

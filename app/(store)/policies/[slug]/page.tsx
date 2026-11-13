@@ -26,19 +26,19 @@ export default async function PolicyPage({
   if (!doc) notFound();
 
   return (
-    <div className="page-wrap page-narrow legal">
-      <header className="page-head">
-        <h1>{doc.title}</h1>
-        <p className="page-sub">Last updated {doc.updated}</p>
-      </header>
-      {doc.sections.map((s) => (
-        <section key={s.heading} className="legal-section">
-          <h2>{s.heading}</h2>
-          {s.body.map((p, i) => (
-            <p key={i}>{p}</p>
-          ))}
-        </section>
-      ))}
+    <div className="page-width page-width--narrow main-page">
+      <h1 className="main-page-title center">{doc.title}</h1>
+      <div className="rte">
+        <p>Last updated {doc.updated}</p>
+        {doc.sections.map((s) => (
+          <section key={s.heading}>
+            <h2>{s.heading}</h2>
+            {s.body.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </section>
+        ))}
+      </div>
     </div>
   );
 }

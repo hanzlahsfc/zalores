@@ -6,13 +6,24 @@ import { useEffect, useState } from "react";
 import { site } from "@/lib/site";
 import { useCart } from "./CartProvider";
 import SearchModal from "./SearchModal";
-import { IconBag, IconClose, IconMenu, IconSearch } from "./Icons";
+import {
+  IconArrow,
+  IconBag,
+  IconClose,
+  IconInstagram,
+  IconMenu,
+  IconPinterest,
+  IconSearch,
+  IconTikTok,
+} from "./Icons";
 
 const NAV = [
-  { href: "/shop/", label: "Shop" },
+  { href: "/", label: "Home" },
+  { href: "/shop/", label: "Shop all" },
+  { href: "/shop/?collection=classics", label: "Sunglasses" },
+  { href: "/shop/?collection=accessories", label: "Accessories" },
   { href: "/about/", label: "About" },
   { href: "/contact/", label: "Contact" },
-  { href: "/faq/", label: "FAQ" },
 ];
 
 export default function Header() {
@@ -20,109 +31,115 @@ export default function Header() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     setMenuOpen(false);
     setSearchOpen(false);
   }, [pathname]);
 
+  const current = (href: string) =>
+    href === pathname ? ("page" as const) : undefined;
+
   return (
     <>
-      <div className="announcement">
-        <p>
-          {site.announcement.split("·").map((seg, i, arr) => (
-            <span
-              key={i}
-              className={i === arr.length - 1 ? "announcement-opt" : undefined}
-            >
-              {i > 0 ? " · " : ""}
-              {seg.trim()}
-            </span>
-          ))}
-        </p>
+      <div className="announcement-bar" role="region" aria-label="Announcement">
+        <Link href="/shop/">
+          Free shipping on orders over ${site.freeShippingThreshold}
+          <IconArrow />
+        </Link>
       </div>
-      <header className={`site-header${scrolled ? " scrolled" : ""}`}>
-        <div className="header-inner">
+
+      <div className="section-header">
+        <header className="header page-width">
           <button
-            className="icon-btn menu-btn"
-            aria-label="Open menu"
+            className="icon-btn header__menu-toggle"
+            aria-label="Menu"
             onClick={() => setMenuOpen(true)}
           >
-            <IconMenu width={22} height={22} />
+            <IconMenu />
           </button>
 
-          <nav className="main-nav" aria-label="Primary">
-            {NAV.slice(0, 2).map((l) => (
-              <Link key={l.href} href={l.href}>
-                {l.label}
+          <Link href="/" className="header__heading">
+            {site.name}
+          </Link>
+
+          <nav className="header__inline-menu" aria-label="Main">
+            {NAV.map((l) => (
+              <Link
+                key={l.label}
+                href={l.href}
+                className="header__menu-item"
+                aria-current={current(l.href)}
+              >
+                <span>{l.label}</span>
               </Link>
             ))}
           </nav>
 
-          <Link href="/" className="wordmark" aria-label={`${site.name} home`}>
-            {site.name}
-          </Link>
-
-          <div className="header-right">
-            <nav className="main-nav nav-right" aria-label="Secondary">
-              {NAV.slice(2).map((l) => (
-                <Link key={l.href} href={l.href}>
-                  {l.label}
-                </Link>
-              ))}
-            </nav>
-
-            <div className="header-actions">
-              <button
-                className="icon-btn"
-                aria-label="Search"
-                onClick={() => setSearchOpen(true)}
-              >
-                <IconSearch width={21} height={21} />
-              </button>
-              <button className="icon-btn cart-btn" aria-label="Open cart" onClick={openCart}>
-                <IconBag width={22} height={22} />
-                {count > 0 && <span className="cart-count">{count}</span>}
-              </button>
-            </div>
+          <div className="header__icons">
+            <button
+              className="icon-btn"
+              aria-label="Search"
+              onClick={() => setSearchOpen(true)}
+            >
+              <IconSearch />
+            </button>
+            <button className="icon-btn" aria-label="Cart" onClick={openCart}>
+              <IconBag />
+              {count > 0 && (
+                <span className="cart-count-bubble" aria-hidden="true">
+                  {count}
+                </span>
+              )}
+              <span className="visually-hidden">{count} items</span>
+            </button>
           </div>
-        </div>
-      </header>
+        </header>
+      </div>
 
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
 
+      {menuOpen && <div className="overlay" onClick={() => setMenuOpen(false)} />}
       <div
-        className={`mobile-menu${menuOpen ? " open" : ""}`}
+        className={`menu-drawer${menuOpen ? " open" : ""}`}
         role="dialog"
         aria-modal="true"
+        aria-label="Menu"
       >
-        <div className="mobile-menu-head">
-          <span className="wordmark">{site.name}</span>
+        <div className="menu-drawer__head">
           <button
             className="icon-btn"
             aria-label="Close menu"
             onClick={() => setMenuOpen(false)}
           >
-            <IconClose width={22} height={22} />
+            <IconClose />
           </button>
         </div>
-        <nav>
+        <nav className="menu-drawer__nav">
           {NAV.map((l) => (
-            <Link key={l.href} href={l.href}>
+            <Link key={l.label} href={l.href} aria-current={current(l.href)}>
               {l.label}
             </Link>
           ))}
+          <Link href="/faq/" aria-current={current("/faq/")}>
+            FAQ
+          </Link>
         </nav>
+        <div className="menu-drawer__utility">
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+          <div className="list-social">
+            <a href={site.social.instagram} aria-label="Instagram">
+              <IconInstagram />
+            </a>
+            <a href={site.social.tiktok} aria-label="TikTok">
+              <IconTikTok />
+            </a>
+            <a href={site.social.pinterest} aria-label="Pinterest">
+              <IconPinterest />
+            </a>
+          </div>
+        </div>
       </div>
-      {menuOpen && <div className="scrim" onClick={() => setMenuOpen(false)} />}
     </>
   );
 }

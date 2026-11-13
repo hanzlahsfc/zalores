@@ -1,13 +1,21 @@
 import Link from "next/link";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export default function NotFound() {
   return (
-    <div className="page-wrap page-narrow not-found">
-      <h1>Lost in the glare?</h1>
-      <p>That page doesn&rsquo;t exist, but the collection does.</p>
-      <Link href="/shop/" className="btn btn-dark">
-        Back to the shop
-      </Link>
-    </div>
+    <>
+      <Header />
+      <main id="MainContent" className="content-for-layout">
+        <div className="page-width not-found">
+          <p className="caption-ls">404</p>
+          <h1>Page not found</h1>
+          <Link href="/shop/" className="button">
+            Continue shopping
+          </Link>
+        </div>
+      </main>
+      <Footer />
+    </>
   );
 }

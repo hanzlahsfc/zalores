@@ -1,50 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { subscribeNewsletter } from "@/lib/forms";
 import { IconArrow, IconCheck } from "./Icons";
 
 export default function NewsletterForm() {
+  const id = useId();
   const [email, setEmail] = useState("");
   const [done, setDone] = useState(false);
+  const [error, setError] = useState(false);
   const [busy, setBusy] = useState(false);
-
-  if (done)
-    return (
-      <p className="newsletter-done">
-        <IconCheck width={18} height={18} /> You&rsquo;re on the list, welcome
-        to {`Zalores`}. Check your inbox for 10% off.
-      </p>
-    );
 
   return (
     <form
       className="newsletter-form"
       onSubmit={async (e) => {
         e.preventDefault();
-        if (busy || !email.includes("@")) return;
+        if (busy || done) return;
         setBusy(true);
+        setError(false);
         const ok = await subscribeNewsletter(email);
         setBusy(false);
         if (ok) setDone(true);
+        else setError(true);
       }}
     >
-      <input
-        type="email"
-        required
-        placeholder="Email address"
-        aria-label="Email address"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <button
-        type="submit"
-        className="btn btn-accent"
-        aria-label="Subscribe"
-        disabled={busy}
-      >
-        <IconArrow width={18} height={18} />
-      </button>
+      <div className="field">
+        <input
+          id={id}
+          type="email"
+          required
+          className="field__input"
+          placeholder=" "
+          autoComplete="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <label className="field__label" htmlFor={id}>
+          Email
+        </label>
+        <button type="submit" className="field__button" aria-label="Subscribe" disabled={busy}>
+          <IconArrow />
+        </button>
+      </div>
+      {done && (
+        <p className="form-message">
+          <IconCheck /> Thanks for subscribing. Use WELCOME10 for 10% off your first order.
+        </p>
+      )}
+      {error && (
+        <p className="form-error" style={{ marginTop: 10 }}>
+          Something went wrong. Please try again.
+        </p>
+      )}
     </form>
   );
 }
