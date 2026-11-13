@@ -94,20 +94,140 @@ function ensureSchema() {
         alter publication supabase_realtime add table public.zl_orders;
       end if;
     end $$`;
-    for (const t of ["zl_products", "zl_orders", "zl_order_items", "zl_discounts", "zl_settings"]) {
+    // Full catalog columns (Shopify-style product records).
+    await sql.unsafe(`
+      alter table public.zl_products
+        add column if not exists tagline text not null default '',
+        add column if not exists description text not null default '',
+        add column if not exists compare_at numeric,
+        add column if not exists collection text,
+        add column if not exists silhouette text not null default 'aviator',
+        add column if not exists tint text not null default '#f2f2f2',
+        add column if not exists rating numeric not null default 0,
+        add column if not exists review_count integer not null default 0,
+        add column if not exists badge text,
+        add column if not exists features jsonb not null default '[]'::jsonb,
+        add column if not exists image text not null default '',
+        add column if not exists gallery jsonb not null default '[]'::jsonb,
+        add column if not exists status text not null default 'active',
+        add column if not exists sort integer not null default 0,
+        add column if not exists tags jsonb not null default '[]'::jsonb,
+        add column if not exists vendor text not null default 'Zalores',
+        add column if not exists created_at timestamptz not null default now()`);
+    await sql`
+      create table if not exists public.zl_collections (
+        slug text primary key,
+        name text not null,
+        description text not null default '',
+        image text not null default '',
+        sort integer not null default 0,
+        created_at timestamptz not null default now()
+      )`;
+    await sql`
+      create table if not exists public.zl_admins (
+        user_id uuid primary key,
+        email text,
+        created_at timestamptz not null default now()
+      )`;
+    await sql.unsafe(`
+      create or replace function public.zl_is_admin() returns boolean
+      language sql stable security definer set search_path = public as $fn$
+        select exists (select 1 from public.zl_admins where user_id = auth.uid())
+      $fn$`);
+    await sql.unsafe(`do $$ begin
+      if not exists (select 1 from pg_publication_tables where pubname = 'supabase_realtime' and tablename = 'zl_products') then
+        alter publication supabase_realtime add table public.zl_products;
+      end if;
+    end $$`);
+    // Admin-only access: membership in zl_admins, not just any signed-in user.
+    for (const t of ["zl_products", "zl_orders", "zl_order_items", "zl_discounts", "zl_settings", "zl_collections", "zl_admins"]) {
       await sql.unsafe(`alter table public.${t} enable row level security`);
+      await sql.unsafe(`drop policy if exists admin_all on public.${t}`);
       await sql.unsafe(
-        `do $$ begin
-           if not exists (select 1 from pg_policies where tablename = '${t}' and policyname = 'admin_all') then
-             execute 'create policy admin_all on public.${t} for all to authenticated using (true) with check (true)';
-           end if;
-         end $$`,
+        `create policy admin_all on public.${t} for all to authenticated using (public.zl_is_admin()) with check (public.zl_is_admin())`,
       );
     }
-    // Only authenticated admin accounts may read/write. Anon gets nothing:
-    // orders are written here via SUPABASE_DB_URL which bypasses RLS.
+    // Storefront reads the live catalog with the anon key.
+    await sql.unsafe(`drop policy if exists public_read on public.zl_products`);
+    await sql.unsafe(`create policy public_read on public.zl_products for select to anon, authenticated using (status = 'active')`);
+    await sql.unsafe(`drop policy if exists public_read on public.zl_collections`);
+    await sql.unsafe(`create policy public_read on public.zl_collections for select to anon, authenticated using (true)`);
+    await ensureBucket();
   })();
   return bootstrap;
+}
+
+/* ------------------------------------------------------------------ */
+/* Admin helpers                                                       */
+/* ------------------------------------------------------------------ */
+
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
+const BUCKET = "product-images";
+
+async function ensureBucket() {
+  await fetch(`${SUPABASE_URL}/storage/v1/bucket`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${SERVICE_KEY}`, apikey: SERVICE_KEY, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      id: BUCKET,
+      name: BUCKET,
+      public: true,
+      file_size_limit: 10485760,
+      allowed_mime_types: ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"],
+    }),
+  }).catch(() => null);
+}
+
+/** Resolve the caller's Supabase user and confirm zl_admins membership. */
+async function requireAdmin(req: Request): Promise<string | null> {
+  const auth = req.headers.get("Authorization") ?? "";
+  if (!auth.startsWith("Bearer ")) return null;
+  const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { Authorization: auth, apikey: ANON_KEY } });
+  if (!res.ok) return null;
+  const user = await res.json();
+  if (!user?.id) return null;
+  const rows = await sql`select 1 from public.zl_admins where user_id = ${user.id}`;
+  return rows.length ? String(user.id) : null;
+}
+
+async function publish() {
+  const hook = Deno.env.get("VERCEL_DEPLOY_HOOK");
+  if (!hook) return { ok: false, error: "no_deploy_hook" };
+  const [row] = await sql`select value from public.zl_settings where key = 'publish'`;
+  const last = Number((row?.value as { at?: number } | undefined)?.at ?? 0);
+  // Collapse bursts of saves into one rebuild.
+  if (Date.now() - last < 20000) return { ok: true, queued: true };
+  await sql`insert into public.zl_settings (key, value) values ('publish', ${sql.json({ at: Date.now() })})
+            on conflict (key) do update set value = excluded.value`;
+  const res = await fetch(hook, { method: "POST" });
+  return { ok: res.ok, queued: false };
+}
+
+async function signUpload(name: string) {
+  const ext = (name.split(".").pop() ?? "jpg").toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 5) || "jpg";
+  const path = `products/${crypto.randomUUID()}.${ext}`;
+  const res = await fetch(`${SUPABASE_URL}/storage/v1/object/upload/sign/${BUCKET}/${path}`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${SERVICE_KEY}`, apikey: SERVICE_KEY, "Content-Type": "application/json" },
+    body: "{}",
+  });
+  const data = await res.json();
+  if (!res.ok || !data.url) return { ok: false, error: "sign_failed" };
+  const token = new URL(`${SUPABASE_URL}/storage/v1${data.url}`).searchParams.get("token");
+  return { ok: true, path, token, publicUrl: `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${path}` };
+}
+
+async function removeUpload(url: string) {
+  const prefix = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/`;
+  if (!url.startsWith(prefix)) return { ok: true };
+  await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${SERVICE_KEY}`, apikey: SERVICE_KEY, "Content-Type": "application/json" },
+    body: JSON.stringify({ prefixes: [url.slice(prefix.length)] }),
+  });
+  return { ok: true };
 }
 
 /* ------------------------------------------------------------------ */
@@ -205,7 +325,7 @@ async function sendOrderEmail(order: Record<string, unknown>, items: { name: str
 /* create-order                                                        */
 /* ------------------------------------------------------------------ */
 
-interface LineInput { slug?: unknown; colorway?: unknown; qty?: unknown }
+interface LineInput { slug?: unknown; colorway?: unknown; colorway_id?: unknown; qty?: unknown }
 
 async function createOrder(body: Record<string, unknown>) {
   const shipping = (body.shipping ?? {}) as Record<string, unknown>;
@@ -223,14 +343,18 @@ async function createOrder(body: Record<string, unknown>) {
 
   // Price everything server-side from zl_products. Never trust client totals.
   const items: { slug: string; name: string; colorway: string | null; qty: number; unit_price: number; line_total: number }[] = [];
+  const variantTakes: { slug: string; variant: string | null; qty: number }[] = [];
   for (const l of lines) {
     if (typeof l.slug !== "string") continue;
     const qty = Math.max(1, Math.min(10, Math.floor(Number(l.qty)) || 1));
-    const [p] = await sql`select slug, name, price, stock, active from public.zl_products where slug = ${l.slug}`;
-    if (!p || !p.active) return json({ ok: false, error: `unavailable:${l.slug}` }, 400);
-    if (Number(p.stock) > 0 && qty > Number(p.stock)) {
-      return json({ ok: false, error: `low_stock:${l.slug}` }, 400);
-    }
+    const [p] = await sql`select slug, name, price, stock, status, colorways from public.zl_products where slug = ${l.slug}`;
+    if (!p || p.status !== "active") return json({ ok: false, error: `unavailable:${l.slug}` }, 400);
+    const variants = (p.colorways ?? []) as { id: string; stock?: number }[];
+    const variantId = typeof l.colorway_id === "string" ? l.colorway_id : variants[0]?.id ?? null;
+    const v = variants.find((x) => x.id === variantId);
+    const available = v && typeof v.stock === "number" ? v.stock : Number(p.stock);
+    if (qty > available) return json({ ok: false, error: `low_stock:${l.slug}` }, 400);
+    variantTakes.push({ slug: String(p.slug), variant: v ? v.id : null, qty });
     items.push({
       slug: String(p.slug),
       name: String(p.name),
@@ -288,7 +412,17 @@ async function createOrder(body: Record<string, unknown>) {
     await sql`
       insert into public.zl_order_items (order_id, slug, name, colorway, qty, unit_price, line_total)
       values (${order.id}, ${i.slug}, ${i.name}, ${i.colorway}, ${i.qty}, ${i.unit_price}, ${i.line_total})`;
-    await sql`update public.zl_products set stock = greatest(stock - ${i.qty}, 0) where slug = ${i.slug} and stock > 0`;
+  }
+  for (const t of variantTakes) {
+    const [p] = await sql`select colorways, stock from public.zl_products where slug = ${t.slug} for update`;
+    const variants = ((p?.colorways ?? []) as { id: string; stock?: number }[]).map((v) =>
+      v.id === t.variant && typeof v.stock === "number" ? { ...v, stock: Math.max(v.stock - t.qty, 0) } : v,
+    );
+    const tracked = variants.some((v) => typeof v.stock === "number");
+    const total = tracked
+      ? variants.reduce((a, v) => a + (typeof v.stock === "number" ? v.stock : 0), 0)
+      : Math.max(Number(p?.stock ?? 0) - t.qty, 0);
+    await sql`update public.zl_products set colorways = ${sql.json(variants)}, stock = ${total}, updated_at = now() where slug = ${t.slug}`;
   }
 
   const fullOrder = { ...order, email: body.email, customer_name: customerName, address, payment_method: payment, shipping_label: shipLabel, subtotal, discount, discount_code: discountCode, shipping: shipCost };
@@ -324,6 +458,15 @@ Deno.serve(async (req) => {
     }
 
     if (body.action === "create-order") return await createOrder(body);
+
+    if (typeof body.action === "string" && body.action.startsWith("admin-")) {
+      const uid = await requireAdmin(req);
+      if (!uid) return json({ ok: false, error: "forbidden" }, 403);
+      if (body.action === "admin-publish") return json(await publish());
+      if (body.action === "admin-sign-upload") return json(await signUpload(String(body.name ?? "image.jpg")));
+      if (body.action === "admin-remove-upload") return json(await removeUpload(String(body.url ?? "")));
+      return json({ ok: false, error: "unknown_action" }, 400);
+    }
 
     return json({ ok: false, error: "unknown_action" }, 400);
   } catch (e) {

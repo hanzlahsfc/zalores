@@ -14,6 +14,10 @@ export interface Colorway {
   frameColor: string;
   lensColor: string;
   lensName: string;
+  /** Variant photo; falls back to the product image. */
+  image?: string;
+  /** Units on hand for this variant (undefined = not tracked). */
+  stock?: number;
 }
 
 export interface Product {
@@ -33,7 +37,7 @@ export interface Product {
   tint: string;
   rating: number;
   reviewCount: number;
-  badge?: "Best Seller" | "New" | "Low Stock" | "Sale";
+  badge?: string;
   stock: number;
   features: string[];
   sku: string;
@@ -45,7 +49,7 @@ export interface Product {
   gallery: string[];
 }
 
-export type CollectionSlug = "classics" | "limited" | "accessories";
+export type CollectionSlug = string;
 
 export interface Collection {
   slug: CollectionSlug;

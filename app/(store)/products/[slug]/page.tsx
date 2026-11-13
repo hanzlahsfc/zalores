@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { site } from "@/lib/site";
-import { getProduct, products, relatedProducts } from "@/lib/products";
+import { getCatalog, getProductBySlug, related as relatedOf } from "@/lib/catalog";
 import { formatPrice } from "@/lib/format";
+import LivePrice from "@/components/LivePrice";
 import ProductDetail from "@/components/ProductDetail";
 import ProductBuy from "@/components/ProductBuy";
 import ProductCard from "@/components/ProductCard";
@@ -11,7 +12,10 @@ import Accordion from "@/components/Accordion";
 import ShareButton from "@/components/ShareButton";
 import { IconLeaf, IconRefresh, IconShield, IconTruck, Stars } from "@/components/Icons";
 
-export function generateStaticParams() {
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const { products } = await getCatalog();
   return products.map((p) => ({ slug: p.slug }));
 }
 
@@ -21,7 +25,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getProductBySlug(slug);
   if (!product) return {};
   return { title: product.name, description: product.description };
 }
@@ -32,10 +36,10 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getProductBySlug(slug);
   if (!product) notFound();
 
-  const related = relatedProducts(product, 4);
+  const related = relatedOf((await getCatalog()).products, product, 4);
 
   return (
     <>
@@ -53,12 +57,7 @@ export default async function ProductPage({
             </span>
           </div>
 
-          <div className="price price--large">
-            {product.compareAt && <s>{formatPrice(product.compareAt)}</s>}
-            <span>{formatPrice(product.price)}</span>
-            {product.compareAt && <span className="badge badge--sale">Sale</span>}
-            {product.stock === 0 && <span className="badge">Sold out</span>}
-          </div>
+          <LivePrice product={product} />
           <p className="product__tax">
             <Link href="/policies/shipping-returns/">Shipping</Link> calculated at
             checkout.

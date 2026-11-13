@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { formatPrice } from "@/lib/format";
 import { useOrdersRealtime } from "@/lib/useOrdersRealtime";
 import {
@@ -12,10 +12,12 @@ import {
   type OrderRow,
 } from "@/lib/supabase";
 
-export default function AdminOrders() {
+function AdminOrders() {
+  const router = useRouter();
+  const params = useSearchParams();
   const [orders, setOrders] = useState<OrderRow[]>([]);
   const [status, setStatus] = useState<string>("all");
-  const [q, setQ] = useState("");
+  const [q, setQ] = useState(params.get("q") ?? "");
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState("");
 
@@ -49,6 +51,7 @@ export default function AdminOrders() {
           (status === "all" || o.status === status) &&
           (!q ||
             o.order_number.toLowerCase().includes(q.toLowerCase()) ||
+            (o.phone ?? "").includes(q) ||
             o.email.toLowerCase().includes(q.toLowerCase()) ||
             (o.customer_name ?? "").toLowerCase().includes(q.toLowerCase())),
       ),
@@ -64,33 +67,29 @@ export default function AdminOrders() {
   if (loading) return <div className="adm-splash">Loading orders…</div>;
 
   return (
-    <>
-      <h1>Orders</h1>
-      <p className="adm-sub">{orders.length} orders total</p>
-
-      <div className="adm-tabs">
-        {["all", ...ORDER_STATUSES].map((s) => (
-          <button
-            key={s}
-            type="button"
-            className={`adm-tab${status === s ? " active" : ""}`}
-            onClick={() => setStatus(s)}
-          >
-            {s[0].toUpperCase() + s.slice(1)} {counts[s] ? `(${counts[s]})` : ""}
-          </button>
-        ))}
+    <div className="adm-page adm-page--wide">
+      <div className="adm-head">
+        <h1>Orders</h1>
+        <span className="adm-muted">{orders.length} total</span>
       </div>
 
-      <input
-        className="adm-search"
-        placeholder="Search order #, customer or email"
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
-      />
-
-      <div className="adm-card">
+      <div className="adm-card adm-card--flush">
+        <div className="adm-tabs">
+          {["all", ...ORDER_STATUSES].map((s) => (
+            <button key={s} type="button" className={`adm-tab${status === s ? " active" : ""}`} onClick={() => setStatus(s)}>
+              {s[0].toUpperCase() + s.slice(1)}
+              {counts[s] ? ` (${counts[s]})` : ""}
+            </button>
+          ))}
+        </div>
+        <div className="adm-filterbar">
+          <input className="adm-search" placeholder="Search by order #, customer, email or phone" value={q} onChange={(e) => setQ(e.target.value)} />
+        </div>
         {filtered.length === 0 ? (
-          <p className="adm-empty">No orders match.</p>
+          <div className="adm-empty">
+            <h3>{orders.length ? "No orders found" : "Your orders will show here"}</h3>
+            <p>{orders.length ? "Try changing the filters or search term." : "New orders appear here in real time."}</p>
+          </div>
         ) : (
           <table className="adm-table">
             <thead>
@@ -99,39 +98,29 @@ export default function AdminOrders() {
                 <th>Date</th>
                 <th>Customer</th>
                 <th>City</th>
-                <th>Payment</th>
-                <th>Paid</th>
                 <th>Total</th>
-                <th>Status</th>
+                <th>Payment status</th>
+                <th>Fulfillment</th>
+                <th>Payment</th>
               </tr>
             </thead>
             <tbody>
               {filtered.map((o) => (
-                <tr key={o.id}>
+                <tr key={o.id} className="clickable" onClick={() => router.push(`/admin/order/?id=${o.id}`)}>
                   <td>
-                    <Link href={`/admin/order/?id=${o.id}`}>{o.order_number}</Link>
+                    <strong>{o.order_number}</strong>
                   </td>
-                  <td>{fmtDate(o.created_at)}</td>
-                  <td>
-                    {o.customer_name || "—"}
-                    <br />
-                    <span className="adm-muted">{o.email}</span>
-                  </td>
-                  <td>{o.address?.city ?? "—"}</td>
-                  <td>
-                    <span className="adm-badge adm-badge--cod">
-                      {PAYMENT_LABELS[o.payment_method] ?? o.payment_method}
-                    </span>
-                  </td>
-                  <td>
-                    <span className={`adm-badge adm-badge--${o.payment_status}`}>
-                      {o.payment_status}
-                    </span>
-                  </td>
+                  <td className="adm-muted">{fmtDate(o.created_at)}</td>
+                  <td>{o.customer_name || o.email}</td>
+                  <td className="adm-muted">{o.address?.city ?? ""}</td>
                   <td>{formatPrice(o.total)}</td>
+                  <td>
+                    <span className={`adm-badge adm-badge--${o.payment_status}`}>{o.payment_status === "paid" ? "Paid" : "Payment pending"}</span>
+                  </td>
                   <td>
                     <span className={`adm-badge adm-badge--${o.status}`}>{o.status}</span>
                   </td>
+                  <td className="adm-muted">{PAYMENT_LABELS[o.payment_method] ?? o.payment_method}</td>
                 </tr>
               ))}
             </tbody>
@@ -139,6 +128,14 @@ export default function AdminOrders() {
         )}
       </div>
       {toast && <div className="adm-toast">{toast}</div>}
-    </>
+    </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div className="adm-splash">Loading orders…</div>}>
+      <AdminOrders />
+    </Suspense>
   );
 }

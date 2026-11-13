@@ -51,7 +51,7 @@ export default function AdminSettings() {
   if (loading) return <div className="adm-splash">Loading settings…</div>;
 
   return (
-    <>
+    <div className="adm-page">
       <h1>Settings</h1>
       <p className="adm-sub">Store details used on receipts, invoices and order emails</p>
       <form className="adm-card" style={{ maxWidth: 560 }} onSubmit={save}>
@@ -92,6 +92,6 @@ export default function AdminSettings() {
         </button>
         {msg && <p className="adm-msg ok">{msg}</p>}
       </form>
-    </>
+    </div>
   );
 }

@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import type { CollectionRecord, ProductRecord } from "./catalog-map";
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
@@ -51,16 +52,8 @@ export interface OrderItemRow {
   line_total: number;
 }
 
-export interface ProductRow {
-  slug: string;
-  name: string;
-  sku: string | null;
-  price: number;
-  stock: number;
-  active: boolean;
-  colorways: { id: string; name: string; lens: string }[];
-  updated_at: string;
-}
+export type ProductRow = ProductRecord & { active: boolean };
+export type CollectionRow = CollectionRecord;
 
 export interface DiscountRow {
   code: string;

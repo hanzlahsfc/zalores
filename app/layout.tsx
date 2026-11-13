@@ -3,6 +3,8 @@ import { Assistant } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
 import { CartProvider } from "@/components/CartProvider";
+import { CatalogProvider } from "@/components/CatalogProvider";
+import { getCatalog } from "@/lib/catalog";
 import CartDrawer from "@/components/CartDrawer";
 
 const body = Assistant({
@@ -25,18 +27,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const catalog = await getCatalog();
   return (
     <html lang="en" className={body.variable}>
       <body>
-        <CartProvider>
-          {children}
-          <CartDrawer />
-        </CartProvider>
+        <CatalogProvider initial={catalog}>
+          <CartProvider>
+            {children}
+            <CartDrawer />
+          </CartProvider>
+        </CatalogProvider>
       </body>
     </html>
   );

@@ -34,7 +34,8 @@ export default function ProductImage({
 
   const candidates = [
     src,
-    cw.id !== product.colorways[0].id
+    cw.image,
+    cw.image === undefined && cw.id !== product.colorways[0].id
       ? `/assets/img/products/${product.slug}-${cw.id}.jpg`
       : undefined,
     product.image,

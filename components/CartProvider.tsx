@@ -9,7 +9,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { getProduct } from "@/lib/products";
+import { useCatalog } from "./CatalogProvider";
 import type { CartItem, Colorway, Product } from "@/lib/types";
 
 export interface CartLine {
@@ -39,6 +39,7 @@ const keyOf = (slug: string, colorway?: string) =>
   `${slug}:${colorway ?? "default"}`;
 
 export function CartProvider({ children }: { children: ReactNode }) {
+  const { getProduct } = useCatalog();
   const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);

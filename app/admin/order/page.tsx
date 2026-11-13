@@ -60,7 +60,7 @@ function OrderDetail() {
   const a = order.address ?? {};
 
   return (
-    <>
+    <div className="adm-page">
       <p style={{ marginBottom: 8 }}>
         <Link href="/admin/orders/" className="adm-muted">
           ← Back to orders
@@ -260,7 +260,7 @@ function OrderDetail() {
         </div>
       </div>
       {msg && <p className="adm-msg ok">{msg}</p>}
-    </>
+    </div>
   );
 }
 

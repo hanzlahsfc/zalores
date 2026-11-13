@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { site } from "@/lib/site";
-import { collections, getProduct, products } from "@/lib/products";
+import { getCatalog } from "@/lib/catalog";
 import { formatPrice } from "@/lib/format";
 import ProductCard from "@/components/ProductCard";
 import ProductImage from "@/components/ProductImage";
@@ -13,11 +13,7 @@ import {
   Stars,
 } from "@/components/Icons";
 
-const hero = getProduct("aviator")!;
-
-const featured = ["navigator", "aviator", "concorde", "shelby-aviator-ii"].map(
-  (s) => getProduct(s)!
-);
+const FEATURED = ["navigator", "aviator", "concorde", "shelby-aviator-ii"];
 
 const perks = [
   {
@@ -63,7 +59,12 @@ const reviews = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { products, collections } = await getCatalog();
+  const hero = products.find((p) => p.slug === "aviator") ?? products[0];
+  const picked = FEATURED.map((s) => products.find((p) => p.slug === s)).filter((p) => p !== undefined);
+  const featured = (picked.length >= 4 ? picked : [...picked, ...products.filter((p) => !picked.includes(p))]).slice(0, 4);
+
   return (
     <>
       <section className="banner">
@@ -146,7 +147,8 @@ export default function HomePage() {
           </div>
           <ul className="collection-list" role="list">
             {collections.map((c) => {
-              const rep = products.find((p) => p.collection === c.slug)!;
+              const rep = products.find((p) => p.collection === c.slug);
+              if (!rep) return null;
               return (
                 <li key={c.slug}>
                   <Link href={`/shop/?collection=${c.slug}`} className="collection-card">

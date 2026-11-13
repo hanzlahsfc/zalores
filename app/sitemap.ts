@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/lib/site";
-import { products } from "@/lib/products";
+import { getCatalog } from "@/lib/catalog";
 import { legalDocs } from "@/lib/legal";
 
 export const dynamic = "force-static";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const { products } = await getCatalog();
   const staticPages = ["", "shop", "about", "contact", "faq", "checkout"].map(
     (p) => ({
       url: `${site.url}/${p}`,

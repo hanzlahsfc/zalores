@@ -72,7 +72,7 @@ export default function AdminCustomers() {
   if (loading) return <div className="adm-splash">Loading customers…</div>;
 
   return (
-    <>
+    <div className="adm-page">
       <h1>Customers</h1>
       <p className="adm-sub">{customers.length} customers from order history</p>
       <div className="adm-card">
@@ -109,6 +109,6 @@ export default function AdminCustomers() {
           </table>
         )}
       </div>
-    </>
+    </div>
   );
 }

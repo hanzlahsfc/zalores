@@ -1,5 +1,6 @@
 "use client";
 
+import { useLiveProduct } from "./CatalogProvider";
 import Link from "next/link";
 import { formatPrice } from "@/lib/format";
 import type { Product } from "@/lib/types";
@@ -8,13 +9,14 @@ import ProductImage from "./ProductImage";
 import { Stars } from "./Icons";
 
 export default function ProductCard({
-  product,
+  product: initial,
   priority,
 }: {
   product: Product;
   priority?: boolean;
 }) {
   const { add } = useCart();
+  const product = useLiveProduct(initial);
   const href = `/products/${product.slug}/`;
   const hover = product.gallery[0];
   const soldOut = product.stock === 0;

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { collections, products } from "@/lib/products";
+import { useCatalog } from "./CatalogProvider";
 import { formatPrice } from "@/lib/format";
 import type { Product } from "@/lib/types";
 import ProductCard from "./ProductCard";
@@ -22,7 +22,6 @@ const SORTS: { value: Sort; label: string }[] = [
 
 const typeOf = (p: Product) => (p.collection === "accessories" ? "Accessories" : "Sunglasses");
 const TYPES = ["Sunglasses", "Accessories"];
-const MAX_PRICE = Math.max(...products.map((p) => p.price));
 
 interface Filters {
   inStock: boolean;
@@ -47,6 +46,8 @@ function apply(list: Product[], f: Filters) {
 }
 
 export default function ShopClient() {
+  const { products, collections } = useCatalog();
+  const MAX_PRICE = Math.max(1, ...products.map((p) => p.price));
   const params = useSearchParams();
   const slug = params.get("collection");
   const collection = collections.find((c) => c.slug === slug);

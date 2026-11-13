@@ -52,7 +52,7 @@ export default function AdminDiscounts() {
   if (loading) return <div className="adm-splash">Loading discounts…</div>;
 
   return (
-    <>
+    <div className="adm-page">
       <h1>Discounts</h1>
       <p className="adm-sub">Codes customers apply at checkout</p>
       <div className="adm-card">
@@ -145,6 +145,6 @@ export default function AdminDiscounts() {
           </table>
         )}
       </div>
-    </>
+    </div>
   );
 }

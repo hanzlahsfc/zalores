@@ -1,5 +1,6 @@
 "use client";
 
+import { useLiveProduct } from "./CatalogProvider";
 import { useEffect, useRef, useState } from "react";
 import type { Product } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
@@ -9,8 +10,9 @@ import { IconCheck, IconMinus, IconPlus } from "./Icons";
 
 const unique = (xs: string[]) => [...new Set(xs)];
 
-export default function ProductBuy({ product }: { product: Product }) {
+export default function ProductBuy({ product: initial }: { product: Product }) {
   const { add } = useCart();
+  const product = useLiveProduct(initial);
   const { colorway, setColorway } = useColorway();
   const [qty, setQty] = useState(1);
   const [sticky, setSticky] = useState(false);
@@ -18,7 +20,8 @@ export default function ProductBuy({ product }: { product: Product }) {
 
   const frames = unique(product.colorways.map((c) => c.name));
   const lenses = unique(product.colorways.map((c) => c.lensName));
-  const soldOut = product.stock === 0;
+  const soldOut =
+    product.stock === 0 || (typeof colorway.stock === "number" && colorway.stock <= 0);
   const multiLens = frames.some(
     (f) => product.colorways.filter((c) => c.name === f).length > 1
   );

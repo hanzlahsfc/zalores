@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { products } from "@/lib/products";
+import { useCatalog } from "./CatalogProvider";
 import { formatPrice } from "@/lib/format";
 import ProductImage from "./ProductImage";
 import { IconArrow, IconClose, IconSearch } from "./Icons";
@@ -29,6 +29,7 @@ export default function SearchModal({
     };
   }, [open, onClose]);
 
+  const { products } = useCatalog();
   const results = useMemo(() => {
     const needle = q.trim().toLowerCase();
     if (!needle) return [];

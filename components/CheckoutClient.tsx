@@ -355,6 +355,7 @@ export default function CheckoutClient() {
                         },
                         lines: lines.map((l) => ({
                           slug: l.product.slug,
+                          colorway_id: l.colorway.id,
                           colorway: l.colorway.lensName
                             ? `${l.colorway.name} / ${l.colorway.lensName}`
                             : l.colorway.name,

@@ -46,7 +46,7 @@ export default function AdminDashboard() {
   if (loading) return <div className="adm-splash">Loading dashboard…</div>;
 
   return (
-    <>
+    <div className="adm-page">
       <h1>Dashboard</h1>
       <p className="adm-sub">Store performance at a glance</p>
 
@@ -131,6 +131,6 @@ export default function AdminDashboard() {
         </div>
       )}
       {toast && <div className="adm-toast">{toast}</div>}
-    </>
+    </div>
   );
 }
