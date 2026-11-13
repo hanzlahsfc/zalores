@@ -102,9 +102,6 @@ export default function HomePage() {
                 priority
               />
             </div>
-            <div className="hero-chip hero-chip-a">
-              <IconSun width={16} height={16} /> Polarized · UV400
-            </div>
             <Link
               href={`/products/${heroAlt.slug}/`}
               className="hero-chip hero-mini-card hero-chip-b"
@@ -121,19 +118,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* ---------- Marquee ---------- */}
-      <div className="marquee" aria-hidden="true">
-        <div className="marquee-track">
-          {Array.from({ length: 2 }).map((_, i) => (
-            <span key={i}>
-              Mineral-glass lenses &nbsp;✦&nbsp; Hand-assembled frames
-              &nbsp;✦&nbsp; Free shipping over $75 &nbsp;✦&nbsp; 30-day returns
-              &nbsp;✦&nbsp; 2-year warranty &nbsp;✦&nbsp;
-            </span>
-          ))}
-        </div>
-      </div>
 
       {/* ---------- Perks ---------- */}
       <section className="perks">
@@ -154,8 +138,7 @@ export default function HomePage() {
       <section className="section">
         <div className="section-head">
           <div>
-            <span className="eyebrow">Most loved</span>
-            <h2>The bestsellers</h2>
+            <h2>Bestsellers</h2>
           </div>
           <Link href="/shop/" className="link-arrow">
             Shop all <IconArrow width={16} height={16} />
@@ -181,8 +164,7 @@ export default function HomePage() {
             />
           </div>
           <div className="editorial-copy">
-            <span className="eyebrow">Our craft</span>
-            <h2>Made the hard way, on purpose.</h2>
+            <h2>200 steps. One frame at a time.</h2>
             <p>
               Most sunglasses are stamped out in a day. Ours are soldered,
               plated and polished by hand, then fitted with real mineral-glass
@@ -213,8 +195,7 @@ export default function HomePage() {
       <section className="section">
         <div className="section-head">
           <div>
-            <span className="eyebrow">Find your lane</span>
-            <h2>Shop by collection</h2>
+            <h2>Collections</h2>
           </div>
         </div>
         <div className="collection-grid">
@@ -225,7 +206,7 @@ export default function HomePage() {
                 key={c.slug}
                 href={`/shop/?collection=${c.slug}`}
                 className="collection-card"
-                style={{ background: rep.tint }}
+               
               >
                 <div className="collection-art">
                   <ProductImage
@@ -264,8 +245,7 @@ export default function HomePage() {
       <section className="section">
         <div className="section-head">
           <div>
-            <span className="eyebrow">2,800+ reviews</span>
-            <h2>Worn everywhere.</h2>
+            <h2>Reviews</h2>
           </div>
         </div>
         <div className="review-grid">
@@ -285,8 +265,7 @@ export default function HomePage() {
       {/* ---------- Closing CTA ---------- */}
       <section className="cta-band">
         <div>
-          <span className="eyebrow eyebrow-light">Ready when you are</span>
-          <h2>Golden hour is calling.</h2>
+          <h2>Find your pair.</h2>
         </div>
         <Link href="/shop/" className="btn btn-light btn-lg">
           Shop the collection <IconArrow width={17} height={17} />

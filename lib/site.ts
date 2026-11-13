@@ -5,7 +5,7 @@
  */
 export const site = {
   name: "Zalores",
-  tagline: "Eyewear, elevated.",
+  tagline: "Metal-frame sunglasses, made to last.",
   description:
     "Hand-assembled metal sunglasses with real mineral-glass lenses. Aviators, limited editions and eyewear accessories. Free shipping over $75.",
   url: "https://zalores.com",
@@ -20,10 +20,10 @@ export const site = {
     tiktok: "https://tiktok.com/@zalores",
     pinterest: "https://pinterest.com/zalores",
   },
-  heroKicker: "Handcrafted American Eyewear",
-  heroTitle: "See the world through real glass.",
+  heroKicker: "Handcrafted metal eyewear",
+  heroTitle: "Metal frames. Real glass. Built to last.",
   heroSub:
-    "Mineral-glass lenses. Hand-assembled frames. Bayonet temples built for the cockpit, worn everywhere since 1978.",
+    "Hand-assembled aviators with genuine mineral-glass lenses. Pilot heritage since 1978.",
 } as const;
 
 export type Site = typeof site;

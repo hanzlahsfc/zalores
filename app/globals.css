@@ -4,19 +4,20 @@
    ============================================================ */
 
 :root {
-  --ink: #1b1712;
-  --ink-2: #4c443a;
-  --muted: #8b8072;
-  --cream: #f3ede2;
-  --paper: #faf7f1;
-  --sand: #e7ddca;
-  --line: #ddd2bd;
-  --accent: #b0552c;
-  --accent-dark: #8e3f1d;
-  --success: #41684c;
-  --radius: 16px;
-  --radius-sm: 10px;
-  --shadow: 0 14px 44px rgba(27, 23, 18, 0.1);
+  --ink: #161514;
+  --ink-2: #484842;
+  --muted: #6f6f69;
+  --cream: #ffffff;
+  --paper: #ffffff;
+  --sand: #f4f4f2;
+  --line: #e6e6e2;
+  --accent: #1e3a5c;
+  --accent-dark: #12263f;
+  --star: #e0a32c;
+  --success: #2f6b4f;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 12px 34px rgba(0, 0, 0, 0.08);
   --header-h: 72px;
 }
 
@@ -39,27 +40,16 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* subtle paper grain over the whole page */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
-}
-
 body > * {
   position: relative;
   z-index: 2;
 }
 
 h1, h2, h3, h4, .wordmark {
-  font-family: var(--font-display), Georgia, serif;
-  font-weight: 500;
-  line-height: 1.08;
-  letter-spacing: -0.01em;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-weight: 650;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
 }
 
 img, svg {
@@ -93,7 +83,7 @@ input, select, textarea {
   justify-content: center;
   gap: 8px;
   padding: 13px 26px;
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   font-weight: 600;
   font-size: 15px;
   letter-spacing: 0.01em;
@@ -192,11 +182,11 @@ input, select, textarea {
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--muted);
   margin-bottom: 14px;
 }
 .eyebrow-light {
-  color: var(--sand);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .badge {
@@ -220,7 +210,7 @@ input, select, textarea {
 .stars {
   display: inline-flex;
   gap: 2px;
-  color: var(--accent);
+  color: var(--star);
 }
 
 .scrim {
@@ -371,7 +361,7 @@ input, select, textarea {
   gap: 4px;
 }
 .mobile-menu nav a {
-  font-family: var(--font-display), serif;
+  font-family: var(--font-body), system-ui, sans-serif;
   font-size: 26px;
   padding: 10px 0;
   border-bottom: 1px solid var(--line);
@@ -426,10 +416,10 @@ input, select, textarea {
 }
 
 .hero-arch {
-  border-radius: 260px 260px 28px 28px;
+  border-radius: var(--radius);
   overflow: hidden;
   box-shadow: var(--shadow);
-  aspect-ratio: 4 / 4.6;
+  aspect-ratio: 4 / 3.7;
 }
 .hero-arch .product-art {
   width: 100%;
@@ -446,7 +436,7 @@ input, select, textarea {
   gap: 8px;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   padding: 10px 18px;
   font-size: 13.5px;
   font-weight: 600;
@@ -455,15 +445,10 @@ input, select, textarea {
 .hero-chip svg {
   color: var(--accent);
 }
-.hero-chip-a {
-  top: 8%;
-  right: -4%;
-  animation: float 5s ease-in-out infinite;
-}
 .hero-chip-b {
-  bottom: 6%;
-  left: -6%;
-  border-radius: 18px;
+  bottom: 16px;
+  left: 16px;
+  border-radius: 12px;
   padding: 12px 18px;
   animation: float 6s ease-in-out 0.8s infinite;
 }
@@ -495,30 +480,6 @@ input, select, textarea {
   50% { transform: translateY(-9px); }
 }
 
-/* ---------- marquee ---------- */
-
-.marquee {
-  background: var(--ink);
-  color: var(--sand);
-  overflow: hidden;
-  padding: 13px 0;
-}
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marquee 30s linear infinite;
-  font-family: var(--font-display), serif;
-  font-size: 15px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.marquee-track span {
-  white-space: nowrap;
-}
-
-@keyframes marquee {
-  to { transform: translateX(-50%); }
-}
 
 /* ---------- perks ---------- */
 
@@ -639,7 +600,7 @@ input, select, textarea {
   gap: 12px;
 }
 .product-card-name {
-  font-family: var(--font-display), serif;
+  font-family: var(--font-body), system-ui, sans-serif;
   font-size: 20px;
 }
 .product-card-price {
@@ -678,7 +639,7 @@ input, select, textarea {
   align-items: center;
   gap: 5px;
   border: 1.5px solid var(--ink);
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   padding: 7px 15px;
   font-size: 13.5px;
   font-weight: 600;
@@ -816,7 +777,7 @@ input, select, textarea {
   padding: 28px;
 }
 .review-card blockquote {
-  font-family: var(--font-display), serif;
+  font-family: var(--font-body), system-ui, sans-serif;
   font-size: 19px;
   line-height: 1.4;
   margin: 16px 0 20px;
@@ -833,7 +794,7 @@ input, select, textarea {
 /* ---------- CTA band ---------- */
 
 .cta-band {
-  background: var(--accent);
+  background: var(--ink);
   color: #fff;
   display: flex;
   align-items: center;
@@ -885,7 +846,7 @@ input, select, textarea {
   flex: 1;
   background: rgba(243, 237, 226, 0.08);
   border: 1px solid rgba(243, 237, 226, 0.25);
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   padding: 14px 22px;
   color: var(--cream);
   outline: none;
@@ -1062,7 +1023,7 @@ input, select, textarea {
 .sort-select {
   background: var(--paper);
   border: 1.5px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   padding: 9px 16px;
   font-size: 14px;
   font-weight: 500;
@@ -1112,7 +1073,7 @@ input, select, textarea {
   font-size: clamp(34px, 3.8vw, 48px);
 }
 .pdp-tagline {
-  font-family: var(--font-display), serif;
+  font-family: var(--font-body), system-ui, sans-serif;
   font-size: 19px;
   color: var(--ink-2);
   font-style: italic;
@@ -1318,7 +1279,7 @@ fieldset {
   margin-bottom: 34px;
 }
 legend {
-  font-family: var(--font-display), serif;
+  font-family: var(--font-body), system-ui, sans-serif;
   font-size: 21px;
   margin-bottom: 16px;
 }
@@ -1582,7 +1543,7 @@ legend {
   gap: 3px;
 }
 .cart-line-name {
-  font-family: var(--font-display), serif;
+  font-family: var(--font-body), system-ui, sans-serif;
   font-size: 17px;
 }
 .cart-line-meta {
@@ -1594,7 +1555,7 @@ legend {
   align-items: center;
   gap: 4px;
   border: 1.5px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   margin-top: 8px;
   width: fit-content;
 }
@@ -1688,7 +1649,7 @@ legend {
   padding: 36px 20px;
 }
 .stat strong {
-  font-family: var(--font-display), serif;
+  font-family: var(--font-body), system-ui, sans-serif;
   font-size: 46px;
   display: block;
   color: var(--accent);
@@ -1882,11 +1843,9 @@ legend {
     flex-direction: column;
     align-items: flex-start;
   }
-  .hero-chip-a {
-    right: 0;
-  }
   .hero-chip-b {
-    left: 0;
+    left: 12px;
+    bottom: 12px;
   }
   .field-row {
     flex-direction: column;
@@ -1967,8 +1926,6 @@ legend {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track,
-  .hero-chip-a,
   .hero-chip-b {
     animation: none;
   }
@@ -2018,7 +1975,7 @@ legend {
   border: 0;
   background: none;
   outline: none;
-  font-family: var(--font-display), serif;
+  font-family: var(--font-body), system-ui, sans-serif;
   font-size: clamp(20px, 3vw, 30px);
 }
 .search-bar input::placeholder {
