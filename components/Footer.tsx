@@ -56,7 +56,7 @@ export default function Footer() {
             <div>
               <span className="localization-label">Country/region</span>
               <button className="localization-button" type="button">
-                United States | USD $ <IconCaret />
+                Pakistan | PKR Rs <IconCaret />
               </button>
             </div>
             <PaymentIcons />

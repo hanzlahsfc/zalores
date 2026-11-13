@@ -18,11 +18,11 @@ export default function ContactPage() {
         </div>
         <div>
           <h2>Hours</h2>
-          <p>Mon to Fri, 9am to 6pm ET</p>
+          <p>Mon to Sat, 11am to 8pm PKT</p>
         </div>
         <div>
           <h2>Pickup</h2>
-          <p>Zalores Studio, ready in 24 hours</p>
+          <p>Zalores Studio, DHA Phase 5, Lahore. Ready in 24 hours</p>
         </div>
       </div>
       <ContactForm />

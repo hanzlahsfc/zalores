@@ -97,9 +97,9 @@ export default async function ProductPage({
                 title: "Shipping",
                 body: (
                   <p>
-                    Orders placed before 2pm ET ship the same business day.
+                    Orders placed before 2pm PKT ship the same business day.
                     Standard shipping is free over{" "}
-                    {formatPrice(site.freeShippingThreshold)}, otherwise $4.95.
+                    {formatPrice(site.freeShippingThreshold)}, otherwise {formatPrice(site.shipping.standard)}.
                     Express delivery is available at checkout.
                   </p>
                 ),

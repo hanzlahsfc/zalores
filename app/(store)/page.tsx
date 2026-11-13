@@ -23,7 +23,7 @@ const perks = [
   {
     icon: IconTruck,
     title: "Free shipping",
-    body: `On every order over $${site.freeShippingThreshold}. Orders before 2pm ET ship the same day.`,
+    body: `Free nationwide delivery over ${formatPrice(site.freeShippingThreshold)}. Orders before 2pm ship the same day.`,
   },
   {
     icon: IconSun,
@@ -46,19 +46,19 @@ const reviews = [
   {
     quote:
       "The mineral glass is on another level. Sharper and clearer than anything I've owned, including pairs twice the price.",
-    name: "Maya R.",
+    name: "Ayesha R.",
     product: "Aviator",
   },
   {
     quote:
       "Cobalt lenses killed the glare off the water completely. First pair that has survived a full year of fishing.",
-    name: "Daniel K.",
+    name: "Bilal K.",
     product: "Aviator Cobalt",
   },
   {
     quote:
       "Six hours under a headset with zero pressure points. Now I get why pilots swear by bayonet temples.",
-    name: "Priya S.",
+    name: "Hassan S.",
     product: "Concorde",
   },
 ];

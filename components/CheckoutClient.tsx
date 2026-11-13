@@ -9,17 +9,11 @@ import ProductImage from "./ProductImage";
 import PaymentIcons from "./PaymentIcons";
 import { IconBag, IconCaret, IconCheck, IconLock } from "./Icons";
 
-const STANDARD = 4.95;
-const EXPRESS = 12.95;
+const { standard: STANDARD, express: EXPRESS } = site.shipping;
 const CODES: Record<string, number> = { WELCOME10: 0.1 };
-const STATES = [
-  "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware",
-  "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa",
-  "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota",
-  "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
-  "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon",
-  "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah",
-  "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming",
+const PROVINCES = [
+  "Punjab", "Sindh", "Khyber Pakhtunkhwa", "Balochistan",
+  "Gilgit-Baltistan", "Azad Jammu & Kashmir", "Islamabad Capital Territory",
 ];
 
 interface Placed {
@@ -108,7 +102,7 @@ function Summary({
         <div className="co-row co-row--total">
           <span>Total</span>
           <span>
-            <small>USD</small>
+            <small>PKR</small>
             {formatPrice(total)}
           </span>
         </div>
@@ -121,7 +115,7 @@ export default function CheckoutClient() {
   const { lines, subtotal, clear } = useCart();
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [method, setMethod] = useState<"standard" | "express">("standard");
-  const [payment, setPayment] = useState<"card" | "paypal">("card");
+  const [payment, setPayment] = useState<"cod" | "card" | "bank">("cod");
   const [address, setAddress] = useState("");
   const [code, setCode] = useState("");
   const [applied, setApplied] = useState<string | null>(null);
@@ -241,7 +235,7 @@ export default function CheckoutClient() {
                   </div>
                   <div>
                     <h4>Payment method</h4>
-                    <p>{payment === "card" ? "Credit card" : "PayPal"} · {formatPrice(placed.total)}</p>
+                    <p>{payment === "card" ? "Debit/Credit card" : payment === "bank" ? "Bank transfer" : "Cash on Delivery"} · {formatPrice(placed.total)}</p>
                   </div>
                   <div>
                     <h4>Shipping address</h4>
@@ -296,10 +290,10 @@ export default function CheckoutClient() {
                   address: [
                     `${g("first")} ${g("last")}`.trim(),
                     [g("address"), g("apt")].filter(Boolean).join(", "),
-                    `${g("city")} ${g("state")} ${g("zip")}`.trim(),
-                    "United States",
+                    `${g("city")}, ${g("province")} ${g("postal")}`.trim(),
+                    "Pakistan",
                   ].filter(Boolean),
-                  method: method === "express" ? "Express (1 to 2 business days)" : "Standard (3 to 5 business days)",
+                  method: method === "express" ? "Express (1 to 2 working days)" : "Standard (3 to 5 working days)",
                   lines,
                   subtotal,
                   discount,
@@ -311,21 +305,6 @@ export default function CheckoutClient() {
                 window.scrollTo(0, 0);
               }}
             >
-              <p className="co-express__label">Express checkout</p>
-              <div className="co-express__row">
-                <button type="button" className="co-express__btn co-express__btn--shop" aria-label="Shop Pay">
-                  <em>shop</em>
-                  <span>Pay</span>
-                </button>
-                <button type="button" className="co-express__btn co-express__btn--paypal" aria-label="PayPal">
-                  Pay<span>Pal</span>
-                </button>
-                <button type="button" className="co-express__btn co-express__btn--gpay" aria-label="Google Pay">
-                  G Pay
-                </button>
-              </div>
-              <div className="co-or">OR</div>
-
               <section className="co-section">
                 <div className="co-section__head">
                   <h2>Contact</h2>
@@ -342,8 +321,8 @@ export default function CheckoutClient() {
                 </div>
                 <div className="co-fields">
                   <div className="co-field">
-                    <select id="country" name="country" defaultValue="United States">
-                      <option>United States</option>
+                    <select id="country" name="country" defaultValue="Pakistan">
+                      <option>Pakistan</option>
                     </select>
                     <label htmlFor="country">Country/Region</label>
                     <IconCaret />
@@ -365,18 +344,18 @@ export default function CheckoutClient() {
                   <div className="co-fields co-fields--3">
                     <Field id="city" name="city" label="City" required autoComplete="address-level2" />
                     <div className="co-field">
-                      <select id="state" name="state" required defaultValue="">
+                      <select id="province" name="province" required defaultValue="">
                         <option value="" disabled></option>
-                        {STATES.map((s) => (
-                          <option key={s}>{s}</option>
+                        {PROVINCES.map((p) => (
+                          <option key={p}>{p}</option>
                         ))}
                       </select>
-                      <label htmlFor="state">State</label>
+                      <label htmlFor="province">Province</label>
                       <IconCaret />
                     </div>
-                    <Field id="zip" name="zip" label="ZIP code" required inputMode="numeric" autoComplete="postal-code" />
+                    <Field id="postal" name="postal" label="Postal code (optional)" inputMode="numeric" autoComplete="postal-code" />
                   </div>
-                  <Field id="phone" name="phone" type="tel" label="Phone (optional)" autoComplete="tel" />
+                  <Field id="phone" name="phone" type="tel" label="Phone" required autoComplete="tel" />
                 </div>
                 <label className="co-check">
                   <input type="checkbox" /> Save this information for next time
@@ -395,7 +374,7 @@ export default function CheckoutClient() {
                       <input type="radio" name="method" checked={method === "standard"} onChange={() => setMethod("standard")} />
                       <span className="co-option__label">
                         Standard
-                        <small>3 to 5 business days</small>
+                        <small>3 to 5 working days</small>
                       </span>
                       <span className="co-option__price">{freeStandard ? "FREE" : formatPrice(STANDARD)}</span>
                     </label>
@@ -403,7 +382,7 @@ export default function CheckoutClient() {
                       <input type="radio" name="method" checked={method === "express"} onChange={() => setMethod("express")} />
                       <span className="co-option__label">
                         Express
-                        <small>1 to 2 business days</small>
+                        <small>1 to 2 working days, major cities</small>
                       </span>
                       <span className="co-option__price">{formatPrice(EXPRESS)}</span>
                     </label>
@@ -417,10 +396,17 @@ export default function CheckoutClient() {
                 </div>
                 <p className="co-section__sub">All transactions are secure and encrypted.</p>
                 <div className="co-options">
+                  <label className={`co-option${payment === "cod" ? " active" : ""}`}>
+                    <input type="radio" name="payment" checked={payment === "cod"} onChange={() => setPayment("cod")} />
+                    <span className="co-option__label">
+                      Cash on Delivery (COD)
+                      <small>Pay in cash when your order arrives. We will call to confirm.</small>
+                    </span>
+                  </label>
                   <label className={`co-option${payment === "card" ? " active" : ""}`}>
                     <input type="radio" name="payment" checked={payment === "card"} onChange={() => setPayment("card")} />
-                    <span className="co-option__label">Credit card</span>
-                    <PaymentIcons only={["Visa", "Mastercard", "American Express"]} />
+                    <span className="co-option__label">Debit/Credit card</span>
+                    <PaymentIcons only={["Visa", "Mastercard"]} />
                   </label>
                   {payment === "card" && (
                     <div className="co-card-fields">
@@ -435,16 +421,18 @@ export default function CheckoutClient() {
                       </label>
                     </div>
                   )}
-                  <label className={`co-option${payment === "paypal" ? " active" : ""}`}>
-                    <input type="radio" name="payment" checked={payment === "paypal"} onChange={() => setPayment("paypal")} />
-                    <span className="co-option__label">PayPal</span>
-                    <PaymentIcons only={["PayPal"]} />
+                  <label className={`co-option${payment === "bank" ? " active" : ""}`}>
+                    <input type="radio" name="payment" checked={payment === "bank"} onChange={() => setPayment("bank")} />
+                    <span className="co-option__label">
+                      Bank transfer
+                      <small>Account details are shared on the confirmation page and by SMS.</small>
+                    </span>
                   </label>
                 </div>
               </section>
 
               <button type="submit" className="co-pay">
-                {payment === "paypal" ? "Pay with PayPal" : "Pay now"}
+                {payment === "card" ? "Pay now" : "Complete order"}
               </button>
             </form>
             {footer}

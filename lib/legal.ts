@@ -14,15 +14,15 @@ export const legalDocs: LegalDoc[] = [
       {
         heading: "Shipping",
         body: [
-          "Orders placed before 2pm ET ship the same business day. Standard shipping (3–5 business days) is free on orders over $75, otherwise a flat $4.95. Express shipping (1–2 business days) is available at checkout for $12.95.",
-          "We currently ship to the United States and Canada. International rates and duties are calculated at checkout.",
+          "Orders placed before 2pm PKT ship the same business day. Standard delivery (3–5 working days) is free on orders over Rs 8,000, otherwise a flat Rs 350. Express delivery (1–2 working days) is available at checkout for Rs 750.",
+          "We deliver across Pakistan via TCS and Leopards, with cash on delivery in most cities.",
         ],
       },
       {
         heading: "Returns",
         body: [
           "You have 30 days from delivery to return any unworn pair for a full refund, no questions, no restocking fees. Start a return from the link in your order email or by contacting us.",
-          "Refunds are issued to the original payment method within 5 business days of your return arriving at our studio.",
+          "Refunds are issued to the original payment method, or by bank transfer for cash-on-delivery orders, within 5 business days of your return arriving at our studio.",
         ],
       },
       {
@@ -73,7 +73,7 @@ export const legalDocs: LegalDoc[] = [
       {
         heading: "Orders",
         body: [
-          "All orders are subject to acceptance and availability. Prices are shown in USD and may change without notice. We may cancel orders that appear fraudulent or that contain pricing errors.",
+          "All orders are subject to acceptance and availability. Prices are shown in PKR and may change without notice. We may cancel orders that appear fraudulent or that contain pricing errors.",
         ],
       },
       {

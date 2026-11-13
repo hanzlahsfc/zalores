@@ -16,7 +16,7 @@ export const products: Product[] = [
     tagline: "The original, hand-assembled since 1978.",
     description:
       "The frame that built the Randolph Engineering name. A hand-assembled aviator in 23K gold plate with mineral-glass lenses and signature bayonet temples. Issued to military pilots for decades, finished one at a time.",
-    price: 259,
+    price: 14999,
     collection: "classics",
     silhouette: "aviator",
     colorways: [
@@ -49,7 +49,7 @@ export const products: Product[] = [
     tagline: "Squared pilot frame with real bayonet temples.",
     description:
       "A squared navigator silhouette in polished metal. Scratch-resistant polarized lenses, adjustable nose pads, and straight bayonet temples that sit flat under caps and headsets. The everyday frame in six frame and lens combinations.",
-    price: 149,
+    price: 9999,
     collection: "classics",
     silhouette: "aviator",
     colorways: [
@@ -86,7 +86,7 @@ export const products: Product[] = [
     tagline: "The teardrop that outran the jet age.",
     description:
       "Named for the aircraft it outlived, the Concorde wraps mineral-glass lenses in a sweeping gunmetal teardrop. Bigger coverage than the Aviator, same bayonet temples, built for open sky and long light.",
-    price: 269,
+    price: 15999,
     collection: "classics",
     silhouette: "aviator",
     colorways: [
@@ -116,7 +116,7 @@ export const products: Product[] = [
     tagline: "The classic aviator, electrified.",
     description:
       "Same hand-assembled aviator frame, charged with a cobalt-blue mirrored lens that cuts glare off water and asphalt. The pair people ask about before they say hello.",
-    price: 279,
+    price: 16999,
     collection: "limited",
     silhouette: "aviator",
     colorways: [
@@ -146,7 +146,7 @@ export const products: Product[] = [
     tagline: "Carroll Shelby's frame, blacked out.",
     description:
       "A collaboration frame in black chrome with a blue-violet gradient lens. The same silhouette Carroll Shelby wore trackside. Small-batch run; when it's gone, it's gone.",
-    price: 449,
+    price: 24999,
     collection: "limited",
     silhouette: "aviator",
     colorways: [
@@ -177,7 +177,7 @@ export const products: Product[] = [
     tagline: "Full-grain leather, snap-fit, stays put.",
     description:
       "A hand-stitched full-grain leather retainer that snaps to your temples and keeps your frames exactly where you left them: around your neck, not on the asphalt.",
-    price: 39,
+    price: 1999,
     collection: "accessories",
     silhouette: "accessory",
     colorways: [
@@ -207,7 +207,7 @@ export const products: Product[] = [
     tagline: "Three pairs, one indestructible case.",
     description:
       "A pebbled leather travel case with three padded slots and a plush interior. Keeps a small collection safe in a carry-on or a glovebox. Embossed 'Handcrafted American Eyewear' inside the lid.",
-    price: 65,
+    price: 3499,
     collection: "accessories",
     silhouette: "accessory",
     colorways: [
@@ -235,8 +235,8 @@ export const products: Product[] = [
     name: "Lens Cleaning Kit",
     tagline: "Everything mineral glass asks for.",
     description:
-      "A complete care kit: lens spray, microfiber cloth and a soft brush, sized for for a glovebox or desk drawer. Because a $300 lens deserves better than a t-shirt hem.",
-    price: 25,
+      "A complete care kit: lens spray, microfiber cloth and a soft brush, sized for for a glovebox or desk drawer. Because a premium glass lens deserves better than a t-shirt hem.",
+    price: 1499,
     collection: "accessories",
     silhouette: "accessory",
     colorways: [
@@ -261,7 +261,7 @@ export const products: Product[] = [
     tagline: "The humble hero of clear lenses.",
     description:
       "Three dense-weave microfiber cloths: one for the case, one for the car, one for the pocket you're currently patting down. The cheapest insurance your lenses can buy.",
-    price: 15,
+    price: 999,
     collection: "accessories",
     silhouette: "accessory",
     colorways: [

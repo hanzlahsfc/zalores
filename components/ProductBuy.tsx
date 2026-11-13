@@ -140,7 +140,7 @@ export default function ProductBuy({ product }: { product: Product }) {
         <IconCheck />
         <div>
           <p>
-            Pickup available at <strong>Zalores Studio</strong>
+            Pickup available at <strong>Zalores Studio, Lahore</strong>
           </p>
           <small>Usually ready in 24 hours</small>
           <a href="/contact/" className="link">

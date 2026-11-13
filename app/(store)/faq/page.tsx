@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     title: "How fast is shipping?",
-    body: "Orders placed before 2pm ET ship the same business day. Standard delivery takes 3 to 5 business days and is free over $75. Express takes 1 to 2 business days for $12.95.",
+    body: "Orders placed before 2pm PKT ship the same business day via TCS and Leopards. Standard delivery takes 3 to 5 working days and is free over Rs 8,000. Express takes 1 to 2 working days for Rs 750. Cash on delivery is available nationwide.",
   },
   {
     title: "What is your return policy?",

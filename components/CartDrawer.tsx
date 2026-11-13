@@ -145,7 +145,7 @@ export default function CartDrawer() {
               )}
               <div className="totals">
                 <h3>Estimated total</h3>
-                <span className="totals__value">{formatPrice(subtotal)} USD</span>
+                <span className="totals__value">{formatPrice(subtotal)} PKR</span>
               </div>
               <p className="tax-note">
                 Taxes, discounts and{" "}
