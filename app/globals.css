@@ -1887,6 +1887,16 @@ legend {
   }
   .product-card-meta {
     font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .card-swatches {
+    margin-top: 8px;
+  }
+  .card-swatches .swatch {
+    width: 13px;
+    height: 13px;
   }
   .product-card-foot {
     flex-direction: column;
@@ -1895,7 +1905,7 @@ legend {
     margin-top: 10px;
   }
   .product-card-rating {
-    justify-content: space-between;
+    justify-content: flex-start;
   }
   .add-btn {
     justify-content: center;

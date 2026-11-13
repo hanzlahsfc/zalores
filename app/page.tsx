@@ -16,7 +16,7 @@ import {
 } from "@/components/Icons";
 
 const hero = getProduct("aviator")!;
-const heroAlt = getProduct("concorde")!;
+const heroAlt = getProduct("navigator")!;
 
 const perks = [
   { icon: IconTruck, title: `Free shipping over ${formatPrice(site.freeShippingThreshold)}`, sub: "Ships same day before 2pm ET" },
@@ -145,7 +145,7 @@ export default function HomePage() {
           </Link>
         </div>
         <div className="product-grid grid-3">
-          {[getProduct("aviator")!, getProduct("concorde")!, getProduct("shelby-aviator-ii")!].map(
+          {[getProduct("navigator")!, getProduct("aviator")!, getProduct("shelby-aviator-ii")!].map(
             (p, i) => (
               <ProductCard key={p.slug} product={p} priority={i === 0} />
             )
