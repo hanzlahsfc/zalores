@@ -72,3 +72,46 @@ components/          header, cart drawer, product detail, checkout, etc.
 lib/                 site config, catalog, types, legal copy
 public/assets/img/   drop generated photography here
 ```
+
+## Admin backend (`/admin`)
+
+Supabase-backed store admin, all client-side so it still works as a static
+export:
+
+- **Login** — Supabase Auth (email/password). Create users in the Supabase
+  dashboard → Authentication. Seeded admin: `admin@zalores.com`.
+- **Dashboard** — revenue, orders today, pending count, COD-to-collect,
+  recent orders, low-stock alerts.
+- **Orders** — filterable/searchable list, detail page with items, address,
+  fulfillment status (pending → confirmed → shipped → delivered/cancelled),
+  "Mark COD collected", internal notes.
+- **Receipt printing** — per order: 80mm thermal receipt and A4 invoice,
+  both auto-open the print dialog (`/admin/receipt/?id=<id>&type=thermal|invoice`).
+- **Products** — price/stock/active flags used by checkout validation.
+- **Customers** — aggregated from order history.
+- **Discounts** — percent/fixed codes, validated server-side at checkout.
+- **Settings** — store name/address/phone, receipt footer, shipping rates.
+
+### Backend pieces
+
+- `supabase/functions/storefront-api` — public edge function. `create-order`
+  prices everything server-side from `zl_products` (client totals are never
+  trusted), applies discount codes, writes `zl_orders` + `zl_order_items`,
+  decrements stock, and sends a confirmation email via Resend when
+  `RESEND_API_KEY` (+ optional `RESEND_FROM`) is set as a function secret:
+  `supabase secrets set RESEND_API_KEY=... RESEND_FROM="Zalores <orders@yourdomain.com>"`
+- Tables `zl_products`, `zl_orders`, `zl_order_items`, `zl_discounts`,
+  `zl_settings` self-bootstrap on cold start. RLS: anon gets nothing,
+  authenticated users (admins) get full access.
+- `NEXT_PUBLIC_SUPABASE_API_URL` — edge function URL.
+- `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY` — used by
+  /admin only (RLS enforces authenticated-only access).
+
+### admin.yourdomain.com
+
+`vercel.json` rewrites any request on host `admin.zalores.com` to `/admin`.
+When you add a domain: point `admin.<domain>` at the same Vercel project
+(Vercel → Domains → add `admin.<domain>`) and update the host value in
+`vercel.json`. On Hostinger, create the `admin` subdomain and point its
+document root at the same `out/` upload — `/admin` paths resolve via the
+exported `admin/` directory.

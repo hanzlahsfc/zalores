@@ -10,7 +10,10 @@ import PaymentIcons from "./PaymentIcons";
 import { IconBag, IconCaret, IconCheck, IconLock } from "./Icons";
 
 const { standard: STANDARD, express: EXPRESS } = site.shipping;
+const API = process.env.NEXT_PUBLIC_SUPABASE_API_URL ?? "";
+// Offline fallback if the API is unreachable; the server validates anyway.
 const CODES: Record<string, number> = { WELCOME10: 0.1 };
+type Applied = { code: string; type: "percent" | "fixed"; value: number };
 const PROVINCES = [
   "Punjab", "Sindh", "Khyber Pakhtunkhwa", "Balochistan",
   "Gilgit-Baltistan", "Azad Jammu & Kashmir", "Islamabad Capital Territory",
@@ -118,11 +121,17 @@ export default function CheckoutClient() {
   const [payment, setPayment] = useState<"cod" | "card" | "bank">("cod");
   const [address, setAddress] = useState("");
   const [code, setCode] = useState("");
-  const [applied, setApplied] = useState<string | null>(null);
+  const [applied, setApplied] = useState<Applied | null>(null);
   const [codeError, setCodeError] = useState(false);
   const [placed, setPlaced] = useState<Placed | null>(null);
+  const [placing, setPlacing] = useState(false);
+  const [orderError, setOrderError] = useState("");
 
-  const discount = applied ? Math.round(subtotal * CODES[applied] * 100) / 100 : 0;
+  const discount = applied
+    ? applied.type === "percent"
+      ? Math.round((subtotal * applied.value) / 100)
+      : Math.min(subtotal, applied.value)
+    : 0;
   const freeStandard = subtotal - discount >= site.freeShippingThreshold;
   const shipping = useMemo(() => {
     if (!address.trim()) return null;
@@ -130,10 +139,29 @@ export default function CheckoutClient() {
   }, [address, method, freeStandard]);
   const total = subtotal - discount + (shipping ?? 0);
 
-  const applyCode = () => {
+  const applyCode = async () => {
     const c = code.trim().toUpperCase();
+    if (!c) return;
+    if (API) {
+      try {
+        const res = await fetch(API, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "validate-discount", code: c }),
+        });
+        const data = await res.json();
+        if (data.ok) {
+          setApplied({ code: c, type: data.type, value: Number(data.value) });
+          setCodeError(false);
+          setCode("");
+          return;
+        }
+      } catch {
+        /* fall through to local check */
+      }
+    }
     if (CODES[c]) {
-      setApplied(c);
+      setApplied({ code: c, type: "percent", value: CODES[c] * 100 });
       setCodeError(false);
       setCode("");
     } else setCodeError(true);
@@ -278,11 +306,12 @@ export default function CheckoutClient() {
         <div className="co-left">
           <div className="co-left__inner">
             <form
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
-                // UI only: connect a payment processor here, then record the order.
                 const f = new FormData(e.currentTarget);
                 const g = (k: string) => String(f.get(k) ?? "").trim();
+                const shipLabel =
+                  method === "express" ? "Express (1 to 2 working days)" : "Standard (3 to 5 working days)";
                 const placedOrder: Placed = {
                   id: Math.random().toString(36).slice(2, 11).toUpperCase(),
                   email: g("email"),
@@ -293,13 +322,63 @@ export default function CheckoutClient() {
                     `${g("city")}, ${g("province")} ${g("postal")}`.trim(),
                     "Pakistan",
                   ].filter(Boolean),
-                  method: method === "express" ? "Express (1 to 2 working days)" : "Standard (3 to 5 working days)",
+                  method: shipLabel,
                   lines,
                   subtotal,
                   discount,
                   shipping: shipping ?? 0,
                   total,
                 };
+                setOrderError("");
+                setPlacing(true);
+                if (API) {
+                  try {
+                    const res = await fetch(API, {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        action: "create-order",
+                        email: g("email"),
+                        phone: g("phone"),
+                        method,
+                        payment,
+                        discount_code: applied?.code ?? null,
+                        note: g("note"),
+                        shipping: {
+                          first: g("first"),
+                          last: g("last"),
+                          address: g("address"),
+                          apt: g("apt"),
+                          city: g("city"),
+                          province: g("province"),
+                          postal: g("postal"),
+                        },
+                        lines: lines.map((l) => ({
+                          slug: l.product.slug,
+                          colorway: l.colorway.lensName
+                            ? `${l.colorway.name} / ${l.colorway.lensName}`
+                            : l.colorway.name,
+                          qty: l.qty,
+                        })),
+                      }),
+                    });
+                    const data = await res.json();
+                    if (!data.ok) {
+                      setOrderError(
+                        typeof data.error === "string" && data.error.startsWith("low_stock")
+                          ? "An item in your cart is low on stock. Please adjust quantities."
+                          : "Could not place the order. Please check your details and try again."
+                      );
+                      setPlacing(false);
+                      return;
+                    }
+                    placedOrder.id = data.order_number;
+                    placedOrder.total = Number(data.total);
+                  } catch {
+                    /* offline: still show confirmation with a local number */
+                  }
+                }
+                setPlacing(false);
                 setPlaced(placedOrder);
                 clear();
                 window.scrollTo(0, 0);
@@ -356,6 +435,7 @@ export default function CheckoutClient() {
                     <Field id="postal" name="postal" label="Postal code (optional)" inputMode="numeric" autoComplete="postal-code" />
                   </div>
                   <Field id="phone" name="phone" type="tel" label="Phone" required autoComplete="tel" />
+                  <Field id="note" name="note" label="Delivery instructions (optional)" />
                 </div>
                 <label className="co-check">
                   <input type="checkbox" /> Save this information for next time
@@ -431,8 +511,13 @@ export default function CheckoutClient() {
                 </div>
               </section>
 
-              <button type="submit" className="co-pay">
-                {payment === "card" ? "Pay now" : "Complete order"}
+              {orderError && (
+                <p className="co-discount__msg err" style={{ margin: "0 0 10px" }}>
+                  {orderError}
+                </p>
+              )}
+              <button type="submit" className="co-pay" disabled={placing}>
+                {placing ? "Placing order…" : payment === "card" ? "Pay now" : "Complete order"}
               </button>
             </form>
             {footer}
@@ -475,7 +560,7 @@ export default function CheckoutClient() {
                   {codeError && <p className="co-discount__msg err">Enter a valid discount code or gift card</p>}
                   {applied && (
                     <p className="co-discount__msg ok" style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                      <IconCheck width={14} height={14} /> {applied} applied
+                      <IconCheck width={14} height={14} /> {applied.code} applied
                       <button type="button" onClick={() => setApplied(null)} style={{ color: "#1773b0", marginLeft: 6, textDecoration: "underline" }}>
                         Remove
                       </button>

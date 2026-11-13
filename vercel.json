@@ -1,0 +1,14 @@
+{
+  "rewrites": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "admin.zalores.com" }],
+      "destination": "/admin/:path*"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "admin.zalores.com" }],
+      "destination": "/admin"
+    }
+  ]
+}
