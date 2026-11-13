@@ -4,11 +4,23 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { formatPrice } from "@/lib/format";
 import { fmtDate, supabase, type OrderRow, type ProductRow } from "@/lib/supabase";
+import { useOrdersRealtime } from "@/lib/useOrdersRealtime";
 
 export default function AdminDashboard() {
   const [orders, setOrders] = useState<OrderRow[]>([]);
   const [lowStock, setLowStock] = useState<ProductRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState("");
+
+  useOrdersRealtime({
+    insert: (o) => {
+      setOrders((prev) => (prev.some((x) => x.id === o.id) ? prev : [o, ...prev]));
+      setToast(`New order ${o.order_number} · ${formatPrice(o.total)}`);
+      setTimeout(() => setToast(""), 8000);
+    },
+    update: (o) => setOrders((prev) => prev.map((x) => (x.id === o.id ? o : x))),
+    remove: (id) => setOrders((prev) => prev.filter((x) => x.id !== id)),
+  });
 
   useEffect(() => {
     if (!supabase) return;
@@ -118,6 +130,7 @@ export default function AdminDashboard() {
           </table>
         </div>
       )}
+      {toast && <div className="adm-toast">{toast}</div>}
     </>
   );
 }

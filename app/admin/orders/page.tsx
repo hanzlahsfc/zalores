@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { formatPrice } from "@/lib/format";
+import { useOrdersRealtime } from "@/lib/useOrdersRealtime";
 import {
   fmtDate,
   ORDER_STATUSES,
@@ -16,6 +17,17 @@ export default function AdminOrders() {
   const [status, setStatus] = useState<string>("all");
   const [q, setQ] = useState("");
   const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState("");
+
+  useOrdersRealtime({
+    insert: (o) => {
+      setOrders((prev) => (prev.some((x) => x.id === o.id) ? prev : [o, ...prev]));
+      setToast(`New order ${o.order_number} · ${formatPrice(o.total)}`);
+      setTimeout(() => setToast(""), 8000);
+    },
+    update: (o) => setOrders((prev) => prev.map((x) => (x.id === o.id ? o : x))),
+    remove: (id) => setOrders((prev) => prev.filter((x) => x.id !== id)),
+  });
 
   useEffect(() => {
     if (!supabase) return;
@@ -126,6 +138,7 @@ export default function AdminOrders() {
           </table>
         )}
       </div>
+      {toast && <div className="adm-toast">{toast}</div>}
     </>
   );
 }

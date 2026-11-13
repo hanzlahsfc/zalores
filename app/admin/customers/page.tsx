@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { formatPrice } from "@/lib/format";
 import { fmtDate, supabase, type OrderRow } from "@/lib/supabase";
+import { useOrdersRealtime } from "@/lib/useOrdersRealtime";
 
 interface Customer {
   email: string;
@@ -17,6 +18,19 @@ interface Customer {
 export default function AdminCustomers() {
   const [orders, setOrders] = useState<OrderRow[]>([]);
   const [loading, setLoading] = useState(true);
+
+  useOrdersRealtime({
+    insert: () => {
+      if (supabase)
+        supabase
+          .from("zl_orders")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .then(({ data }) =>
+            setOrders(((data ?? []) as OrderRow[]).filter((o) => o.status !== "cancelled")),
+          );
+    },
+  });
 
   useEffect(() => {
     if (!supabase) return;

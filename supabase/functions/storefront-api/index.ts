@@ -87,6 +87,13 @@ function ensureSchema() {
         value jsonb not null default '{}'::jsonb
       )`;
     await sql`create sequence if not exists public.zl_order_number_seq start 1001`;
+    await sql`update public.zl_orders set status = 'dispatched' where status = 'shipped'`;
+    // Live order feed for the admin panel.
+    await sql`do $$ begin
+      if not exists (select 1 from pg_publication_tables where pubname = 'supabase_realtime' and tablename = 'zl_orders') then
+        alter publication supabase_realtime add table public.zl_orders;
+      end if;
+    end $$`;
     for (const t of ["zl_products", "zl_orders", "zl_order_items", "zl_discounts", "zl_settings"]) {
       await sql.unsafe(`alter table public.${t} enable row level security`);
       await sql.unsafe(

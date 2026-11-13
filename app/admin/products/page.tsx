@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { formatPrice } from "@/lib/format";
 import { supabase, type ProductRow } from "@/lib/supabase";
+import { useEffect as useRealtimeEffect } from "react";
 
 export default function AdminProducts() {
   const [products, setProducts] = useState<ProductRow[]>([]);
@@ -19,6 +20,20 @@ export default function AdminProducts() {
         setProducts((data ?? []) as ProductRow[]);
         setLoading(false);
       });
+  }, []);
+
+  useRealtimeEffect(() => {
+    if (!supabase) return;
+    const client = supabase;
+    const ch = client
+      .channel("zl-products-live")
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "zl_products" }, (p) =>
+        setProducts((prev) => prev.map((x) => (x.slug === (p.new as ProductRow).slug ? (p.new as ProductRow) : x))),
+      )
+      .subscribe();
+    return () => {
+      client.removeChannel(ch);
+    };
   }, []);
 
   async function save(p: ProductRow) {

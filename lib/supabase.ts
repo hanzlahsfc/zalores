@@ -70,7 +70,25 @@ export interface DiscountRow {
   created_at: string;
 }
 
-export const ORDER_STATUSES = ["pending", "confirmed", "shipped", "delivered", "cancelled"] as const;
+export const ORDER_STATUSES = [
+  "pending",
+  "confirmed",
+  "dispatched",
+  "delivered",
+  "completed",
+  "returned",
+  "cancelled",
+] as const;
+
+export const STATUS_HINTS: Record<string, string> = {
+  pending: "New order — call the customer to confirm it is genuine.",
+  confirmed: "Customer confirmed — pack the order and book the courier.",
+  dispatched: "Handed to the courier, in transit to the customer.",
+  delivered: "Reached the customer. Collect the cash if it is COD.",
+  completed: "Order closed — delivered and payment collected.",
+  returned: "Rider brought it back (refused or unreachable).",
+  cancelled: "Cancelled before dispatch.",
+};
 
 export const PAYMENT_LABELS: Record<string, string> = {
   cod: "Cash on Delivery",

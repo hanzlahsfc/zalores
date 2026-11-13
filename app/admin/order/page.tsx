@@ -7,11 +7,13 @@ import { formatPrice } from "@/lib/format";
 import {
   fmtDate,
   ORDER_STATUSES,
+  STATUS_HINTS,
   PAYMENT_LABELS,
   supabase,
   type OrderItemRow,
   type OrderRow,
 } from "@/lib/supabase";
+import { useOrdersRealtime } from "@/lib/useOrdersRealtime";
 
 function OrderDetail() {
   const params = useSearchParams();
@@ -21,6 +23,10 @@ function OrderDetail() {
   const [note, setNote] = useState("");
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(true);
+
+  useOrdersRealtime({
+    update: (o) => setOrder((prev) => (prev && o.id === prev.id ? o : prev)),
+  });
 
   useEffect(() => {
     if (!supabase || !id) return;
@@ -191,7 +197,17 @@ function OrderDetail() {
               <label>Order status</label>
               <select
                 value={order.status}
-                onChange={(e) => update({ status: e.target.value }, "Status updated")}
+                onChange={(e) => {
+                  const status = e.target.value;
+                  update(
+                    status === "completed" && order.payment_method === "cod"
+                      ? { status, payment_status: "paid" }
+                      : { status },
+                    status === "completed" && order.payment_method === "cod"
+                      ? "Completed — COD marked collected"
+                      : "Status updated",
+                  );
+                }}
               >
                 {ORDER_STATUSES.map((s) => (
                   <option key={s} value={s}>
@@ -199,6 +215,9 @@ function OrderDetail() {
                   </option>
                 ))}
               </select>
+              <p className="adm-muted" style={{ marginTop: 6 }}>
+                {STATUS_HINTS[order.status]}
+              </p>
             </div>
             {order.payment_method === "cod" && order.payment_status !== "paid" && (
               <button
