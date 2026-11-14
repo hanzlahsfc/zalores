@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { site } from "@/lib/site";
 import { IconCaret, IconInstagram, IconPinterest, IconTikTok } from "./Icons";
-import NewsletterForm from "./NewsletterForm";
 import PaymentIcons from "./PaymentIcons";
 
 export default function Footer() {
@@ -36,11 +35,7 @@ export default function Footer() {
             </p>
           </div>
           <div className="footer-block--newsletter">
-            <h2 className="footer-block__heading">Subscribe to our emails</h2>
-            <p className="footer-block__text" style={{ marginBottom: 16 }}>
-              Be the first to know about new collections and exclusive offers.
-            </p>
-            <NewsletterForm />
+            <h2 className="footer-block__heading">Follow us</h2>
             <div className="list-social">
               <a href={site.social.instagram} aria-label="Instagram"><IconInstagram /></a>
               <a href={site.social.tiktok} aria-label="TikTok"><IconTikTok /></a>

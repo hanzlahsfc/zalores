@@ -9,10 +9,11 @@ import ProductImage from "./ProductImage";
 import { IconCaret, IconClose, IconMinus, IconPlus, IconTrash } from "./Icons";
 
 export default function CartDrawer() {
-  const { lines, subtotal, isOpen, closeCart, setQty, remove } = useCart();
+  const { lines, subtotal, count, isOpen, closeCart, setQty, remove } = useCart();
   const [noteOpen, setNoteOpen] = useState(false);
   const threshold = site.freeShippingThreshold;
   const remaining = Math.max(0, threshold - subtotal);
+  const freeDelivery = count >= site.freeDeliveryMinItems || remaining <= 0;
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
@@ -58,13 +59,15 @@ export default function CartDrawer() {
 
             <div className="drawer__body">
               <div className="free-shipping">
-                {remaining > 0 ? (
-                  <>You are {formatPrice(remaining)} away from free shipping</>
+                {freeDelivery ? (
+                  <>Your order qualifies for free delivery</>
+                ) : count === 1 ? (
+                  <>Add 1 more item for free delivery</>
                 ) : (
-                  <>Your order qualifies for free shipping</>
+                  <>You are {formatPrice(remaining)} away from free delivery</>
                 )}
                 <div className="free-shipping__bar">
-                  <span style={{ width: `${Math.min(100, (subtotal / threshold) * 100)}%` }} />
+                  <span style={{ width: `${freeDelivery ? 100 : Math.min(100, Math.max(subtotal / threshold, count / site.freeDeliveryMinItems) * 100)}%` }} />
                 </div>
               </div>
 
@@ -73,7 +76,7 @@ export default function CartDrawer() {
                 <span>Total</span>
               </div>
               <ul role="list">
-                {lines.map(({ key, product, colorway, qty }) => (
+                {lines.map(({ key, product, colorway, size, qty }) => (
                   <li key={key} className="cart-item">
                     <Link
                       href={`/products/${product.slug}/`}
@@ -102,6 +105,12 @@ export default function CartDrawer() {
                             <dt style={{ display: "inline" }}>Lens: </dt>
                             <dd style={{ display: "inline" }}>{colorway.lensName}</dd>
                           </div>
+                          {size && (
+                            <div>
+                              <dt style={{ display: "inline" }}>Size: </dt>
+                              <dd style={{ display: "inline" }}>{size} mm</dd>
+                            </div>
+                          )}
                         </dl>
                       )}
                       <div className="cart-item__quantity">

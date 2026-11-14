@@ -33,6 +33,8 @@ export interface Product {
   silhouette: Silhouette;
   /** Purchasable color options. Index 0 is the default. */
   colorways: Colorway[];
+  /** Optional lens/frame sizes in mm, e.g. ["52","55","58"]. */
+  sizes?: string[];
   /** Backdrop tint for product imagery. */
   tint: string;
   rating: number;
@@ -62,5 +64,7 @@ export interface CartItem {
   slug: string;
   /** Colorway id, defaults to the product's first colorway. */
   colorway?: string;
+  /** Selected size label, when the product offers sizes. */
+  size?: string;
   qty: number;
 }

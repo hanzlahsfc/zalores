@@ -44,7 +44,7 @@ export default function Header() {
     <>
       <div className="announcement-bar" role="region" aria-label="Announcement">
         <Link href="/shop/">
-          Free shipping on orders over ${site.freeShippingThreshold}
+          {site.announcement}
           <IconArrow />
         </Link>
       </div>

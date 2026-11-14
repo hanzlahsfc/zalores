@@ -66,7 +66,7 @@ function Summary({
   return (
     <>
       <ul className="co-lines" role="list">
-        {lines.map(({ key, product, colorway, qty }) => (
+        {lines.map(({ key, product, colorway, size, qty }) => (
           <li key={key} className="co-line">
             <span className="co-line__thumb">
               <ProductImage product={product} colorway={colorway} uid={`co-${key}`} />
@@ -77,6 +77,7 @@ function Summary({
               {product.colorways.length > 1 && (
                 <span className="co-line__variant">
                   {colorway.name} / {colorway.lensName}
+                  {size ? ` · ${size} mm` : ""}
                 </span>
               )}
             </span>
@@ -115,7 +116,7 @@ function Summary({
 }
 
 export default function CheckoutClient() {
-  const { lines, subtotal, clear } = useCart();
+  const { lines, subtotal, count, clear } = useCart();
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [method, setMethod] = useState<"standard" | "express">("standard");
   const [payment, setPayment] = useState<"cod" | "card" | "bank">("cod");
@@ -132,7 +133,8 @@ export default function CheckoutClient() {
       ? Math.round((subtotal * applied.value) / 100)
       : Math.min(subtotal, applied.value)
     : 0;
-  const freeStandard = subtotal - discount >= site.freeShippingThreshold;
+  const freeStandard =
+    count >= site.freeDeliveryMinItems || subtotal - discount >= site.freeShippingThreshold;
   const shipping = useMemo(() => {
     if (!address.trim()) return null;
     return method === "express" ? EXPRESS : freeStandard ? 0 : STANDARD;
@@ -359,6 +361,7 @@ export default function CheckoutClient() {
                           colorway: l.colorway.lensName
                             ? `${l.colorway.name} / ${l.colorway.lensName}`
                             : l.colorway.name,
+                          size: l.size,
                           qty: l.qty,
                         })),
                       }),

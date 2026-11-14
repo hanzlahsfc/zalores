@@ -97,8 +97,8 @@ export default async function ProductPage({
                 body: (
                   <p>
                     Orders placed before 2pm PKT ship the same business day.
-                    Standard shipping is free over{" "}
-                    {formatPrice(site.freeShippingThreshold)}, otherwise {formatPrice(site.shipping.standard)}.
+                    Standard delivery is free on orders of{" "}
+                    {site.freeDeliveryMinItems} or more items, or over {formatPrice(site.freeShippingThreshold)} — otherwise {formatPrice(site.shipping.standard)}.
                     Express delivery is available at checkout.
                   </p>
                 ),

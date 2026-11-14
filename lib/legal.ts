@@ -14,7 +14,7 @@ export const legalDocs: LegalDoc[] = [
       {
         heading: "Shipping",
         body: [
-          "Orders placed before 2pm PKT ship the same business day. Standard delivery (3–5 working days) is free on orders over Rs 8,000, otherwise a flat Rs 350. Express delivery (1–2 working days) is available at checkout for Rs 750.",
+          "Orders placed before 2pm PKT ship the same business day. Standard delivery (3–5 working days) is free on orders of 2 or more items, or any order over Rs 8,000 — otherwise a flat Rs 350. Express delivery (1–2 working days) is available at checkout for Rs 750.",
           "We deliver across Pakistan via TCS and Leopards, with cash on delivery in most cities.",
         ],
       },

@@ -19,8 +19,8 @@ const FEATURED = ["navigator", "aviator", "concorde", "shelby-aviator-ii"];
 const perks = [
   {
     icon: IconTruck,
-    title: "Free shipping",
-    body: `Free nationwide delivery over ${formatPrice(site.freeShippingThreshold)}. Orders before 2pm ship the same day.`,
+    title: "Free delivery",
+    body: "Free nationwide delivery on orders of 2 or more items. Orders before 2pm ship the same day.",
   },
   {
     icon: IconSun,

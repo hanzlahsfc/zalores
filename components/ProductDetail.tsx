@@ -13,6 +13,8 @@ import { IconArrow, IconChevronLeft } from "./Icons";
 const VariantCtx = createContext<{
   colorway: Colorway;
   setColorway: (c: Colorway) => void;
+  size?: string;
+  setSize: (s: string) => void;
 } | null>(null);
 
 export function useColorway() {
@@ -29,6 +31,10 @@ export default function ProductDetail({
   children: ReactNode;
 }) {
   const [colorway, setColorway] = useState(product.colorways[0]);
+  const [size, setSize] = useState<string | undefined>(() => {
+    const sz = product.sizes ?? [];
+    return sz.length ? sz[Math.floor((sz.length - 1) / 2)] : undefined;
+  });
   const [active, setActive] = useState(0);
   const touchX = useRef<number | null>(null);
   const media = [undefined, ...product.gallery];
@@ -38,7 +44,7 @@ export default function ProductDetail({
   const go = (d: number) => setActive((i) => (i + d + media.length) % media.length);
 
   return (
-    <VariantCtx.Provider value={{ colorway, setColorway }}>
+    <VariantCtx.Provider value={{ colorway, setColorway, size, setSize }}>
       <section className="product">
         <div className="product__media-wrapper">
           <div

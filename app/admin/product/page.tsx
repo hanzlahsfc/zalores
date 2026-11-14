@@ -48,6 +48,7 @@ const blankProduct = (): ProductRow => ({
   status: "draft",
   sort: 0,
   tags: [],
+  sizes: [],
   vendor: "Zalores",
   active: false,
 });
@@ -72,6 +73,7 @@ function Editor() {
   const [pickFor, setPickFor] = useState<number | null>(null);
   const [featuresText, setFeaturesText] = useState("");
   const [tagsText, setTagsText] = useState("");
+  const [sizesText, setSizesText] = useState("");
 
   useEffect(() => {
     if (!supabase) return;
@@ -95,6 +97,7 @@ function Editor() {
         setOrigMedia(m);
         setFeaturesText((row.features ?? []).join("\n"));
         setTagsText((row.tags ?? []).join(", "));
+        setSizesText((row.sizes ?? []).join(", "));
         setSlugTouched(true);
       }
       setLoading(false);
@@ -108,9 +111,10 @@ function Editor() {
   const draft = useMemo<ProductRow>(() => {
     const features = featuresText.split("\n").map((s) => s.trim()).filter(Boolean);
     const tags = tagsText.split(",").map((s) => s.trim()).filter(Boolean);
+    const sizes = sizesText.split(",").map((s) => s.trim()).filter(Boolean);
     const colorways = p.colorways.map((v, i) => ({ ...v, image: v.image || (i === 0 ? media[0] ?? "" : "") }));
     const stock = colorways.reduce((a, v) => a + (Number(v.stock) || 0), 0);
-    return { ...p, features, tags, colorways, stock, image: media[0] ?? "", gallery: media.slice(1), active: p.status === "active" };
+    return { ...p, features, tags, sizes, colorways, stock, image: media[0] ?? "", gallery: media.slice(1), active: p.status === "active" };
   }, [p, media, featuresText, tagsText]);
 
   const dirty = useMemo(() => {
@@ -122,6 +126,7 @@ function Editor() {
       created_at: undefined,
       features: orig.features ?? [],
       tags: orig.tags ?? [],
+      sizes: orig.sizes ?? [],
       image: origMedia[0] ?? "",
       gallery: origMedia.slice(1),
       colorways: orig.colorways.map((v, i) => ({ ...v, image: v.image || (i === 0 ? origMedia[0] ?? "" : "") })),
@@ -522,6 +527,10 @@ function Editor() {
             <div className="adm-field">
               <label>Tags</label>
               <input value={tagsText} placeholder="summer, polarized" onChange={(e) => setTagsText(e.target.value)} />
+            </div>
+            <div className="adm-field">
+              <label>Sizes (mm)</label>
+              <input value={sizesText} placeholder="52, 55, 58" onChange={(e) => setSizesText(e.target.value)} />
             </div>
           </div>
 

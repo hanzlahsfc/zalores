@@ -13,7 +13,7 @@ const unique = (xs: string[]) => [...new Set(xs)];
 export default function ProductBuy({ product: initial }: { product: Product }) {
   const { add } = useCart();
   const product = useLiveProduct(initial);
-  const { colorway, setColorway } = useColorway();
+  const { colorway, setColorway, size, setSize } = useColorway();
   const [qty, setQty] = useState(1);
   const [sticky, setSticky] = useState(false);
   const buttonsRef = useRef<HTMLDivElement>(null);
@@ -47,9 +47,9 @@ export default function ProductBuy({ product: initial }: { product: Product }) {
         product.colorways.find((c) => c.lensName === lens)!
     );
 
-  const handleAdd = () => add(product.slug, colorway.id, qty);
+  const handleAdd = () => add(product.slug, colorway.id, qty, size);
   const handleBuyNow = () => {
-    add(product.slug, colorway.id, qty);
+    add(product.slug, colorway.id, qty, size);
     window.location.href = "/checkout/";
   };
 
@@ -113,6 +113,28 @@ export default function ProductBuy({ product: initial }: { product: Product }) {
             </fieldset>
           )}
         </>
+      )}
+
+      {(product.sizes ?? []).length > 1 && (
+        <fieldset className="product-form__input">
+          <legend>
+            Size: <strong>{size} mm</strong>
+          </legend>
+          <div className="pills" role="radiogroup">
+            {(product.sizes ?? []).map((s) => (
+              <button
+                key={s}
+                type="button"
+                role="radio"
+                aria-checked={s === size}
+                className="pill"
+                onClick={() => setSize(s)}
+              >
+                {s} mm
+              </button>
+            ))}
+          </div>
+        </fieldset>
       )}
 
       <div style={{ marginTop: 20 }}>

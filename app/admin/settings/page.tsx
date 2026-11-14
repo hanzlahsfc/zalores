@@ -11,6 +11,7 @@ const DEFAULTS = {
   shipping_standard: 350,
   shipping_express: 750,
   free_over: 8000,
+  free_items: 2,
 };
 
 export default function AdminSettings() {
@@ -85,6 +86,10 @@ export default function AdminSettings() {
           <div className="adm-field">
             <label>Free over (Rs)</label>
             <input type="number" min={0} value={cfg.free_over} onChange={set("free_over")} />
+          </div>
+          <div className="adm-field">
+            <label>Free on N+ items</label>
+            <input type="number" min={0} value={cfg.free_items} onChange={set("free_items")} />
           </div>
         </div>
         <button className="adm-btn" type="submit">

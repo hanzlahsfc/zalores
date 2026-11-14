@@ -5,7 +5,7 @@ import type { Collection, Product } from "./types";
  * replace this file, every page, filter, cart line and checkout item is
  * generated from it.
  *
- * Current lineup: genuine Randolph Engineering frames + accessories.
+ * Current lineup: metal-frame sunglasses + accessories.
  * Photos live in public/assets/img/products/, per-colorway shots resolve
  * automatically at <slug>-<colorway-id>.jpg (see ProductImage).
  */
@@ -15,7 +15,7 @@ export const products: Product[] = [
     name: "Aviator",
     tagline: "The original, hand-assembled since 1978.",
     description:
-      "The frame that built the Randolph Engineering name. A hand-assembled aviator in 23K gold plate with mineral-glass lenses and signature bayonet temples. Issued to military pilots for decades, finished one at a time.",
+      "The frame that built the Zalores name. A hand-assembled aviator in 23K gold plate with mineral-glass lenses and signature bayonet temples. Issued to military pilots for decades, finished one at a time.",
     price: 14999,
     collection: "classics",
     silhouette: "aviator",
@@ -24,6 +24,7 @@ export const products: Product[] = [
       { id: "white-gold", image: "/assets/img/products/studio/aviator-white-gold.webp", name: "Jetway White Gold", frameColor: "#c9c9c7", lensColor: "#41474d", lensName: "Gray Polarized" },
       { id: "gun-blue", image: "/assets/img/products/studio/aviator-gun-blue.webp", name: "Satin Gunmetal", frameColor: "#4a4d52", lensColor: "#5d8fa4", lensName: "Blue Hydro" },
     ],
+    sizes: ["52", "53", "54", "55", "56", "57", "58"],
     tint: "#e8e4da",
     rating: 4.9,
     reviewCount: 2847,
@@ -56,6 +57,7 @@ export const products: Product[] = [
       { id: "silver-graphite", image: "/assets/img/products/studio/navigator-silver-graphite.webp", name: "Polished Silver", frameColor: "#c9cbcf", lensColor: "#3a3f45", lensName: "Graphite" },
       { id: "black-graphite", image: "/assets/img/products/studio/navigator-black-graphite.webp", name: "Matte Black", frameColor: "#24262a", lensColor: "#33383e", lensName: "Graphite" },
     ],
+    sizes: ["52", "53", "54", "55", "56", "57", "58"],
     tint: "#e9ebee",
     rating: 4.8,
     reviewCount: 412,
@@ -83,6 +85,7 @@ export const products: Product[] = [
     colorways: [
       { id: "gun-skytec", image: "/assets/img/products/studio/concorde-0.webp", name: "Satin Gunmetal", frameColor: "#4a4d52", lensColor: "#4e7d84", lensName: "SkyTec Blue-Green" },
     ],
+    sizes: ["52", "53", "54", "55", "56", "57", "58"],
     tint: "#e2e6e6",
     rating: 4.8,
     reviewCount: 1632,
@@ -109,6 +112,7 @@ export const products: Product[] = [
     colorways: [
       { id: "satin-gun", image: "/assets/img/products/studio/aviator-cobalt-0.webp", name: "Satin Gunmetal", frameColor: "#4a4d52", lensColor: "#2e6fb8", lensName: "Cobalt Blue Mirror" },
     ],
+    sizes: ["52", "53", "54", "55", "56", "57", "58"],
     tint: "#dde4ec",
     rating: 4.8,
     reviewCount: 941,
@@ -135,6 +139,7 @@ export const products: Product[] = [
     colorways: [
       { id: "black-chrome", image: "/assets/img/products/studio/shelby-aviator-ii-0.webp", name: "Black Chrome", frameColor: "#232325", lensColor: "#4a4a6e", lensName: "Code Black Gradient" },
     ],
+    sizes: ["52", "53", "54", "55", "56", "57", "58"],
     tint: "#e0dde2",
     rating: 4.9,
     reviewCount: 214,
@@ -273,6 +278,18 @@ export const collections: Collection[] = [
     name: "Accessories",
     description: "Cases, straps and care kits, keep your pair pristine.",
     image: "/assets/img/collections/accessories.jpg",
+  },
+  {
+    slug: "night-vision",
+    name: "Night Vision",
+    description: "Low-light and night-driving lenses. Cuts glare, keeps contrast.",
+    image: "/assets/img/products/studio/shelby-aviator-ii-0.webp",
+  },
+  {
+    slug: "summer",
+    name: "Summer",
+    description: "Everyday frames for bright days — mirrored and polarized lenses.",
+    image: "/assets/img/products/studio/aviator-cobalt-0.webp",
   },
 ];
 

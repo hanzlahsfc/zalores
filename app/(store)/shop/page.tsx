@@ -5,7 +5,7 @@ import ShopClient from "@/components/ShopClient";
 export const metadata: Metadata = {
   title: "Products",
   description:
-    "Hand-assembled metal sunglasses with mineral-glass lenses, plus cases, straps and lens care. Free nationwide shipping over Rs 8,000.",
+    "Hand-assembled metal sunglasses with mineral-glass lenses, plus cases, straps and lens care. Free delivery on orders of 2 or more items.",
 };
 
 export default function ShopPage() {

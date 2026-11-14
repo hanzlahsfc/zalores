@@ -20,6 +20,7 @@ export interface ProductRecord {
   image: string;
   gallery: string[];
   colorways: Colorway[];
+  sizes?: string[];
   status: "active" | "draft" | "archived" | string;
   sort: number;
   tags: string[];
@@ -65,6 +66,7 @@ export function toProduct(r: ProductRecord): Product {
     sku: r.sku ?? "",
     image: r.image || colorways[0].image || "",
     gallery: r.gallery ?? [],
+    sizes: r.sizes ?? [],
   };
 }
 

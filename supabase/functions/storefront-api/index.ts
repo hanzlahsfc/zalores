@@ -112,6 +112,7 @@ function ensureSchema() {
         add column if not exists status text not null default 'active',
         add column if not exists sort integer not null default 0,
         add column if not exists tags jsonb not null default '[]'::jsonb,
+        add column if not exists sizes jsonb not null default '[]'::jsonb,
         add column if not exists vendor text not null default 'Zalores',
         add column if not exists created_at timestamptz not null default now()`);
     await sql`
@@ -256,6 +257,7 @@ async function getSettings(): Promise<Required<Settings>> {
     shipping_standard: Number(v.shipping_standard ?? 350),
     shipping_express: Number(v.shipping_express ?? 750),
     free_over: Number(v.free_over ?? 8000),
+    free_items: Number(v.free_items ?? 2),
     currency_symbol: v.currency_symbol ?? "Rs",
   };
 }
@@ -355,10 +357,13 @@ async function createOrder(body: Record<string, unknown>) {
     const available = v && typeof v.stock === "number" ? v.stock : Number(p.stock);
     if (qty > available) return json({ ok: false, error: `low_stock:${l.slug}` }, 400);
     variantTakes.push({ slug: String(p.slug), variant: v ? v.id : null, qty });
+    const sizeList = Array.isArray(p.sizes) ? (p.sizes as string[]).map(String) : [];
+    const size = typeof l.size === "string" && sizeList.includes(l.size) ? l.size : null;
+    const cwLabel = typeof l.colorway === "string" ? l.colorway.slice(0, 120) : null;
     items.push({
       slug: String(p.slug),
       name: String(p.name),
-      colorway: typeof l.colorway === "string" ? l.colorway.slice(0, 120) : null,
+      colorway: cwLabel ? cwLabel + (size ? " · " + size + " mm" : "") : size ? size + " mm" : null,
       qty,
       unit_price: Number(p.price),
       line_total: Number(p.price) * qty,
@@ -379,8 +384,9 @@ async function createOrder(body: Record<string, unknown>) {
     }
   }
 
+  const itemCount = items.reduce((a, i) => a + i.qty, 0);
   const shipCost =
-    method === "express" ? cfg.shipping_express : subtotal - discount >= cfg.free_over ? 0 : cfg.shipping_standard;
+    method === "express" ? cfg.shipping_express : itemCount >= cfg.free_items || subtotal - discount >= cfg.free_over ? 0 : cfg.shipping_standard;
   const shipLabel =
     method === "express" ? "Express (1 to 2 working days)" : "Standard (3 to 5 working days)";
   const total = subtotal - discount + shipCost;

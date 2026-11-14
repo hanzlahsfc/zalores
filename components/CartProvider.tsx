@@ -16,6 +16,7 @@ export interface CartLine {
   key: string;
   product: Product;
   colorway: Colorway;
+  size: string | undefined;
   qty: number;
 }
 
@@ -26,7 +27,7 @@ interface CartCtx {
   isOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
-  add: (slug: string, colorwayId?: string, qty?: number) => void;
+  add: (slug: string, colorwayId?: string, qty?: number, size?: string) => void;
   remove: (key: string) => void;
   setQty: (key: string, qty: number) => void;
   clear: () => void;
@@ -35,8 +36,8 @@ interface CartCtx {
 const Ctx = createContext<CartCtx | null>(null);
 const STORAGE_KEY = "zalores-cart-v1";
 
-const keyOf = (slug: string, colorway?: string) =>
-  `${slug}:${colorway ?? "default"}`;
+const keyOf = (slug: string, colorway?: string, size?: string) =>
+  `${slug}:${colorway ?? "default"}:${size ?? ""}`;
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const { getProduct } = useCatalog();
@@ -63,33 +64,33 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (hydrated) localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   }, [items, hydrated]);
 
-  const add = useCallback((slug: string, colorwayId?: string, qty = 1) => {
-    const key = keyOf(slug, colorwayId);
+  const add = useCallback((slug: string, colorwayId?: string, qty = 1, size?: string) => {
+    const key = keyOf(slug, colorwayId, size);
     setItems((prev) => {
-      const existing = prev.find((i) => keyOf(i.slug, i.colorway) === key);
+      const existing = prev.find((i) => keyOf(i.slug, i.colorway, i.size) === key);
       if (existing)
         return prev.map((i) =>
-          keyOf(i.slug, i.colorway) === key
+          keyOf(i.slug, i.colorway, i.size) === key
             ? { ...i, qty: Math.min(i.qty + qty, 10) }
             : i
         );
-      return [...prev, { slug, colorway: colorwayId, qty }];
+      return [...prev, { slug, colorway: colorwayId, qty, size }];
     });
     setIsOpen(true);
   }, []);
 
   const remove = useCallback((key: string) => {
     setItems((prev) =>
-      prev.filter((i) => keyOf(i.slug, i.colorway) !== key)
+      prev.filter((i) => keyOf(i.slug, i.colorway, i.size) !== key)
     );
   }, []);
 
   const setQty = useCallback((key: string, qty: number) => {
     setItems((prev) =>
       qty <= 0
-        ? prev.filter((i) => keyOf(i.slug, i.colorway) !== key)
+        ? prev.filter((i) => keyOf(i.slug, i.colorway, i.size) !== key)
         : prev.map((i) =>
-            keyOf(i.slug, i.colorway) === key ? { ...i, qty } : i
+            keyOf(i.slug, i.colorway, i.size) === key ? { ...i, qty } : i
           )
     );
   }, []);
@@ -107,9 +108,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
           product.colorways.find((c) => c.id === i.colorway) ??
           product.colorways[0];
         return {
-          key: keyOf(i.slug, i.colorway),
+          key: keyOf(i.slug, i.colorway, i.size),
           product,
           colorway,
+          size: i.size,
           qty: i.qty,
         };
       })
