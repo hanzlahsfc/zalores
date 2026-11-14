@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Colorway, Product } from "@/lib/types";
+import localImageWidths from "@/lib/local-image-widths.json";
 import ProductArt from "./ProductArt";
 
 /**
@@ -19,6 +20,8 @@ export default function ProductImage({
   colorway,
   priority,
   className,
+  sizes,
+  decorative,
 }: {
   product: Product;
   src?: string;
@@ -26,6 +29,8 @@ export default function ProductImage({
   colorway?: Colorway;
   priority?: boolean;
   className?: string;
+  sizes?: string;
+  decorative?: boolean;
 }) {
   const [failed, setFailed] = useState<string[]>([]);
   const [loaded, setLoaded] = useState<string | null>(null);
@@ -42,6 +47,10 @@ export default function ProductImage({
   ].filter((s): s is string => Boolean(s));
 
   const image = candidates.find((c) => !failed.includes(c));
+
+  const srcSet = image && localImageWidths[image as keyof typeof localImageWidths]
+    ?.map((width) => `${image.replace(/\.jpg$/, `-${width}.webp`)} ${width}w`)
+    .join(", ");
 
   // If the image already finished (or failed) before hydration, the load/
   // error events won't refire, sync state from the element instead.
@@ -60,7 +69,10 @@ export default function ProductImage({
         <img
           ref={imgRef}
           src={image}
-          alt={`${product.name} in ${cw.name}, ${product.tagline}`}
+          srcSet={srcSet || undefined}
+          sizes={srcSet ? sizes ?? "auto, 100vw" : undefined}
+          decoding="async"
+          alt={decorative ? "" : `${product.name} in ${cw.name}, ${product.tagline}`}
           loading={priority ? "eager" : "lazy"}
           onLoad={() => setLoaded(image)}
           onError={() => setFailed((f) => [...f, image])}

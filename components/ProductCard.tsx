@@ -8,6 +8,8 @@ import { useCart } from "./CartProvider";
 import ProductImage from "./ProductImage";
 import { Stars } from "./Icons";
 
+const cardImageSizes = "(min-width: 1200px) 285px, (min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw";
+
 export default function ProductCard({
   product: initial,
   priority,
@@ -31,6 +33,7 @@ export default function ProductCard({
       <Link href={href} className="card__media" tabIndex={-1} aria-hidden="true">
         <ProductImage
           product={product}
+          sizes={cardImageSizes}
           uid={`pc-${product.slug}`}
           priority={priority}
           className={hover ? "pimg--has-hover" : undefined}
@@ -38,6 +41,7 @@ export default function ProductCard({
         {hover && (
           <ProductImage
             product={product}
+            sizes={cardImageSizes}
             src={hover}
             uid={`pch-${product.slug}`}
             className="pimg--hover"

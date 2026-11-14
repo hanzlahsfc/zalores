@@ -775,49 +775,47 @@ select.field__input {
 .banner {
   position: relative;
   display: flex;
-  min-height: 480px;
+  min-height: clamp(480px, 135vw, 620px);
   overflow: hidden;
-  background: #2a2a2a;
-}
-@media (min-width: 750px) {
-  .banner {
-    min-height: 640px;
-  }
+  background: #201710;
 }
 .banner__media {
   position: absolute;
   inset: 0;
 }
-.banner__media .pimg,
-.banner__media .product-photo,
-.banner__media .product-art {
+.banner__media img {
   width: 100%;
   height: 100%;
-}
-.banner__media .product-photo {
   object-fit: cover;
-  object-position: 70% 40%;
+  object-position: center 32%;
 }
 .banner__media::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.2) 55%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(0deg, rgb(16 11 8 / 94%), rgb(16 11 8 / 65%) 27%, transparent 66%);
 }
 .banner__content {
   position: relative;
-  z-index: 2;
+  z-index: 1;
   display: flex;
   align-items: flex-end;
   width: 100%;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-block: 32px;
 }
 @media (min-width: 750px) {
+  .banner {
+    min-height: clamp(500px, 48vw, 740px);
+  }
+  .banner__media img {
+    object-position: center 31%;
+  }
+  .banner__media::after {
+    background: linear-gradient(90deg, rgb(16 11 8 / 80%), rgb(16 11 8 / 52%) 38%, transparent 72%);
+  }
   .banner__content {
     align-items: center;
-    padding-top: 60px;
-    padding-bottom: 60px;
+    padding-block: 56px;
   }
 }
 .banner__box {
@@ -826,6 +824,9 @@ select.field__input {
 }
 .banner__heading {
   color: rgb(var(--bg));
+  max-width: 12ch;
+  font-size: clamp(2.15rem, 5.3vw, 4.75rem);
+  line-height: 1.04;
 }
 .banner__text {
   margin-top: 16px;
@@ -838,6 +839,23 @@ select.field__input {
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 28px;
+}
+
+@media (max-width: 420px) {
+  .banner__buttons {
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .banner__buttons .button {
+    min-width: 0;
+    padding-inline: 12px;
+    font-size: 13px;
+  }
+}
+.craft-photo {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 /* ---------- section titles ---------- */
@@ -868,7 +886,7 @@ select.field__input {
 .product-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 8px;
+  column-gap: clamp(8px, 3vw, 16px);
   row-gap: 24px;
   list-style: none;
 }
@@ -989,7 +1007,7 @@ select.field__input {
   min-width: 0;
   padding: 0 12px;
   font-size: 14px;
-  min-height: 40px;
+  min-height: 44px;
 }
 @media (min-width: 750px) {
   .quick-add .button {
@@ -1088,14 +1106,13 @@ select.field__input {
     min-height: 460px;
   }
 }
-.image-with-text__media .pimg,
-.image-with-text__media .product-photo,
-.image-with-text__media .product-art {
+.image-with-text__media .craft-photo {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 60%;
 }
 .image-with-text__content {
   display: flex;
@@ -1539,10 +1556,10 @@ select.field__input {
     padding-top: 36px;
   }
 }
-@media (min-width: 990px) {
+@media (min-width: 750px) {
   .product {
-    grid-template-columns: 55% 1fr;
-    gap: 0;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: clamp(24px, 4vw, 56px);
   }
 }
 .product__media-wrapper {
@@ -1569,11 +1586,11 @@ select.field__input {
 .product__media-main .product-art {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 .thumbnail-list {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
   margin-top: 8px;
   list-style: none;
@@ -1628,11 +1645,6 @@ select.field__input {
 
 .product__info-wrapper {
   min-width: 0;
-}
-@media (min-width: 990px) {
-  .product__info-wrapper {
-    padding-left: 50px;
-  }
 }
 .product__info-container > * + * {
   margin-top: 15px;
@@ -2124,9 +2136,7 @@ select.field__input {
   aspect-ratio: 2 / 1;
   overflow: hidden;
 }
-.page-image .pimg,
-.page-image .product-photo,
-.page-image .product-art {
+.page-image .craft-photo {
   width: 100%;
   height: 100%;
   object-fit: cover;

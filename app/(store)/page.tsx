@@ -3,6 +3,7 @@ import { site } from "@/lib/site";
 import { getCatalog } from "@/lib/catalog";
 import { formatPrice } from "@/lib/format";
 import ProductCard from "@/components/ProductCard";
+import CraftImage from "@/components/CraftImage";
 import ProductImage from "@/components/ProductImage";
 import {
   IconArrow,
@@ -61,7 +62,6 @@ const reviews = [
 
 export default async function HomePage() {
   const { products, collections } = await getCatalog();
-  const hero = products.find((p) => p.slug === "aviator") ?? products[0];
   const picked = FEATURED.map((s) => products.find((p) => p.slug === s)).filter((p) => p !== undefined);
   const featured = (picked.length >= 4 ? picked : [...picked, ...products.filter((p) => !picked.includes(p))]).slice(0, 4);
 
@@ -69,16 +69,27 @@ export default async function HomePage() {
     <>
       <section className="banner">
         <div className="banner__media">
-          <ProductImage
-            product={hero}
-            src="/assets/img/hero.jpg"
-            uid="banner"
-            priority
-          />
+          <picture>
+            <source
+              media="(max-width: 749px)"
+              srcSet="/assets/img/campaign-hero-portrait-480.webp 480w, /assets/img/campaign-hero-portrait-720.webp 720w"
+              sizes="100vw"
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/img/campaign-hero-1536.webp"
+              srcSet="/assets/img/campaign-hero-768.webp 768w, /assets/img/campaign-hero-1200.webp 1200w, /assets/img/campaign-hero-1536.webp 1536w"
+              sizes="100vw"
+              alt=""
+              width={1536}
+              height={1024}
+              fetchPriority="high"
+            />
+          </picture>
         </div>
         <div className="banner__content page-width">
           <div className="banner__box">
-            <h2 className="banner__heading h0">Built to outlast trends</h2>
+            <h1 className="banner__heading h0">Built to outlast trends</h1>
             <p className="banner__text">
               Hand-assembled metal frames with real mineral-glass lenses.
             </p>
@@ -119,11 +130,7 @@ export default async function HomePage() {
         <div className="page-width">
           <div className="image-with-text">
             <div className="image-with-text__media">
-              <ProductImage
-                product={hero}
-                src="/assets/img/about.jpg"
-                uid="iwt"
-              />
+              <CraftImage sizes="(min-width: 1200px) 600px, (min-width: 750px) 50vw, calc(100vw - 32px)" />
             </div>
             <div className="image-with-text__content">
               <h2 className="h1">Made by hand, one frame at a time</h2>
@@ -153,7 +160,7 @@ export default async function HomePage() {
                 <li key={c.slug}>
                   <Link href={`/shop/?collection=${c.slug}`} className="collection-card">
                     <div className="collection-card__media">
-                      <ProductImage product={rep} src={c.image} uid={`col-${c.slug}`} />
+                      <ProductImage product={rep} src={c.image} uid={`col-${c.slug}`} sizes="(min-width: 1200px) 400px, (min-width: 750px) 33vw, calc(100vw - 32px)" decorative />
                     </div>
                     <h3 className="collection-card__title">
                       <span>{c.name}</span>

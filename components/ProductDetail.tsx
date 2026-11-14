@@ -57,11 +57,12 @@ export default function ProductDetail({
               colorway={colorway}
               src={media[active]}
               uid={`pdp-${product.slug}-${colorway.id}-${active}`}
-              priority={active === 0}
+              priority
+              sizes="(min-width: 1200px) 620px, (min-width: 750px) 52vw, 100vw"
             />
           </div>
 
-          <div className="slider-buttons">
+          {media.length > 1 && <div className="slider-buttons">
             <button type="button" className="icon-btn" aria-label="Previous slide" onClick={() => go(-1)}>
               <IconChevronLeft />
             </button>
@@ -71,7 +72,7 @@ export default function ProductDetail({
             <button type="button" className="icon-btn" aria-label="Next slide" onClick={() => go(1)}>
               <IconArrow />
             </button>
-          </div>
+          </div>}
 
           <ul className="thumbnail-list" role="list">
             {media.map((src, i) => (
@@ -85,6 +86,8 @@ export default function ProductDetail({
                 >
                   <ProductImage
                     product={product}
+                    sizes="130px"
+                    decorative
                     colorway={colorway}
                     src={src}
                     uid={`pdp-t${i}-${product.slug}-${colorway.id}`}
