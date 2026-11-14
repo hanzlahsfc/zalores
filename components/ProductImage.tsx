@@ -72,7 +72,7 @@ export default function ProductImage({
           srcSet={srcSet || undefined}
           sizes={srcSet ? sizes ?? "auto, 100vw" : undefined}
           decoding="async"
-          alt={decorative ? "" : `${product.name} in ${cw.name}, ${product.tagline}`}
+          alt={decorative ? "" : product.silhouette === "aviator" ? `${product.name} in ${cw.name} with ${cw.lensName} lenses` : product.name}
           loading={priority ? "eager" : "lazy"}
           onLoad={() => setLoaded(image)}
           onError={() => setFailed((f) => [...f, image])}

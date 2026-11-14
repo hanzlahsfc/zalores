@@ -71,7 +71,7 @@ export default async function HomePage() {
         <div className="banner__media">
           <picture>
             <source
-              media="(max-width: 749px)"
+              media="(width < 600px)"
               srcSet="/assets/img/campaign-hero-portrait-480.webp 480w, /assets/img/campaign-hero-portrait-720.webp 720w"
               sizes="100vw"
             />
