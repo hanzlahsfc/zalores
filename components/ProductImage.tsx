@@ -49,7 +49,7 @@ export default function ProductImage({
   const image = candidates.find((c) => !failed.includes(c));
 
   const srcSet = image && localImageWidths[image as keyof typeof localImageWidths]
-    ?.map((width) => `${image.replace(/\.jpg$/, `-${width}.webp`)} ${width}w`)
+    ?.map((width) => `${image.replace(/\.(jpg|webp)$/, `-${width}.webp`)} ${width}w`)
     .join(", ");
 
   // If the image already finished (or failed) before hydration, the load/
