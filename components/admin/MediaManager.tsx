@@ -151,6 +151,16 @@ export default function MediaManager({
             {i === 0 && !single && <span className="adm-media__primary">Main</span>}
             <div className="adm-media__tools">
               {i > 0 && !single && (
+                <button type="button" className="adm-media__move" title="Move left" onClick={() => move(i, i - 1)}>
+                  ‹
+                </button>
+              )}
+              {i < media.length - 1 && !single && (
+                <button type="button" className="adm-media__move" title="Move right" onClick={() => move(i, i + 1)}>
+                  ›
+                </button>
+              )}
+              {i > 0 && !single && (
                 <button type="button" title="Make main image" onClick={() => move(i, 0)}>
                   ★
                 </button>
@@ -189,7 +199,8 @@ export default function MediaManager({
         <button type="button" className="adm-btn adm-btn--plain" onClick={addUrl}>
           Add from URL
         </button>
-        {!single && media.length > 1 && <span className="adm-help">Drag to reorder. The first image is the main image.</span>}
+        {!single && media.length > 1 && <span className="adm-help adm-media__draghelp">Drag to reorder. The first image is the main image.</span>}
+        {!single && media.length > 1 && <span className="adm-help adm-media__touchhelp">Use ‹ › to reorder. The first image is the main image.</span>}
       </div>
     </>
   );
